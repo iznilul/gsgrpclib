@@ -64,7 +64,7 @@ func init() {
 	} else {
 		Mode = DEV
 	}
-	conf := new(Config)
+	conf := new(RpcConfig)
 	viper.AddConfigPath("./conf")
 	viper.SetConfigName("config." + Mode)
 	viper.SetConfigType("toml")
