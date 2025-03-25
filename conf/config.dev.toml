@@ -1,0 +1,11 @@
+[serverconfig]
+port = 9001
+rpcserverport = 50001
+rpcwecomhost = "localhost:50011"
+rpcbookinghost = "localhost:50021"
+rpctrackhost = "localhost:50031"
+tls = false
+certfile = ""
+keyfile = ""
+cafile = ""
+servernameoverride = "x.test.example.com"

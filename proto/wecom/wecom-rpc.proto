@@ -1,0 +1,181 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//edition = "2023";
+syntax = "proto3";
+import "proto/any.proto";
+//option features.field_presence = IMPLICIT;
+option go_package = "github.com/iznilul/wecom_rpc";
+//option java_multiple_files = true;
+//option java_package = "io.grpc.examples.routeguide";
+//option java_outer_classname = "RouteGuideProto";
+//protoc  --go_out=. --go_opt=paths=source_relative     --go-grpc_out=. --go-grpc_opt=paths=source_relative     pkg/rpc/wecom/wecom-rpc.proto
+
+package wrpc;
+
+// Interface exported by the server.
+service WecomRPC {
+  rpc GetUserList(RequestAO) returns (ResponseVO) {}
+  rpc GetUserInfo(RequestAO) returns (ResponseVO) {}
+  rpc SaveUserDetail(UserDetailAO) returns (ResponseVO) {}
+  rpc GetUserDetailByUserID(RequestAO) returns (ResponseVO) {}
+  rpc GetUserDetailList(RequestAO) returns (ResponseVO) {}
+  rpc GetRoleList(RequestAO) returns (ResponseVO) {}
+  rpc GetRoleByUserID(RequestAO) returns (ResponseVO) {}
+  rpc GetUserByRoleName(RequestAO) returns (ResponseVO) {}
+  rpc FindCustomerList(FindCustomerAO) returns (ResponseVO) {}
+  rpc FindCustomerGroupList(FindCustomerGroupAO) returns (ResponseVO) {}
+  rpc FindCustomerCouldBeSelectedList(RequestAO) returns (ResponseVO) {}
+  rpc AddCustomer(AddCustomerAO) returns (ResponseVO) {}
+  rpc UpdateCustomerRemark(UpdateCustomerAO) returns (ResponseVO) {}
+  rpc GetCustomerInRobotChat(GetCustomerInRobotChatAO) returns (ResponseVO) {}
+  rpc GetCustomerGroup(GetCustomerGroupAO) returns (ResponseVO) {}
+  rpc GetCustomerGroupList(GetCustomerGroupAO) returns (ResponseVO) {}
+  rpc GetCustomerGroupChat(RequestAO) returns (ResponseVO) {}
+  rpc GetCustomerGroupChatByChatID(RequestAO) returns (ResponseVO) {}
+  rpc FlushCustomer(RequestAO) returns (ResponseVO) {}
+  rpc SyncCustomerGroup(RequestAO) returns (ResponseVO) {}
+  rpc FlushCustomerGroup(RequestAO) returns (ResponseVO) {}
+  rpc QueryCustomerGroupByCond(OptionAO) returns (ResponseVO) {}
+  rpc SendTextMsg(RequestAO) returns (ResponseVO) {}
+  rpc SendWarnMsg(RequestAO) returns (ResponseVO) {}
+  rpc FindAccountUserList(FindAccountAO) returns (ResponseVO) {}
+  rpc SyncAccountUser(RequestAO) returns (ResponseVO) {}
+  rpc FlushAccountUser(RequestAO) returns (ResponseVO) {}
+  rpc GetAccountUserList(RequestAO) returns (ResponseVO) {}
+  rpc GetAccountUserListByOpenIDList(OpenIDListAO) returns (ResponseVO) {}
+  rpc ModifyAccountUserRemark(ModifyRemarkAO) returns (ResponseVO) {}
+  rpc GetAccountTagList(RequestAO) returns (ResponseVO) {}
+  rpc GetOauthCallBackURL(RequestAO) returns (ResponseVO) {}
+  rpc SyncContactWayList(RequestAO) returns (ResponseVO) {}
+  rpc FlushContactWay(RequestAO) returns (ResponseVO) {}
+  rpc SendAccountTrackMsg(RequestAO) returns (ResponseVO) {}
+  rpc SendAccountProcMsg(RequestAO) returns (ResponseVO) {}
+  rpc QueryFieldList(RequestAO) returns (ResponseVO) {}
+  rpc FindSupplierList(RequestAO) returns (ResponseVO) {}
+  rpc SyncSupplier(RequestAO) returns (ResponseVO) {}
+  rpc FindBusinessCustomerList(RequestAO) returns (ResponseVO) {}
+  rpc SyncBusinessCustomer(RequestAO) returns (ResponseVO) {}
+  rpc UpdateBusinessCustomer(RequestAO) returns (ResponseVO) {}
+  rpc FindEnumList(RequestAO) returns (ResponseVO) {}
+  rpc QueryNameByType(RequestAO) returns (ResponseVO) {}
+  rpc GetBusinessCustomer(RequestAO) returns (ResponseVO) {}
+  rpc GetNeedNotifyCustomerList(RequestAO) returns (ResponseVO) {}
+  rpc FindClaimedCustomer(RequestAO) returns (ResponseVO) {}
+  rpc SaveCustomerPointRecord(RequestAO) returns (ResponseVO) {}
+}
+
+message MessageAO {
+  string message = 1;
+  string userID = 2;
+  string requestUserID = 3;
+  string appName = 4;
+}
+
+message OpenIDListAO {
+  repeated string openIDList = 1;
+}
+
+message ModifyRemarkAO {
+  string remark = 1;
+  string openID = 2;
+}
+
+message OptionAO {
+  string table = 1;
+  string field = 2;
+  string value = 3;
+  bool flag = 4;
+}
+
+message UserDetailAO {
+  string userID = 1;
+  string gender = 2;
+  string email = 3;
+  string avatar = 4;
+  string qrCode = 5;
+  string mobile = 6;
+  string bizMail = 7;
+  string address = 8;
+}
+
+message GetCustomerGroupAO {
+  string chatID = 1;
+  string groupName = 2;
+}
+
+message FindAccountAO  {
+  string remark = 1;
+  int32 currentPage = 2;
+  int32 pageSize = 3;
+  int32 tagID = 4;
+}
+
+message FindCustomerAO  {
+  string remark = 1;
+  int32 currentPage = 2;
+  int32 pageSize = 3;
+  string userID = 4;
+  string searcher = 5;
+  bool  all = 6;
+}
+
+message FindCustomerGroupAO  {
+  string name = 1;
+  int32 currentPage = 2;
+  int32 pageSize = 3;
+  string userID = 4;
+  string searcher = 5;
+  bool  all = 6;
+}
+
+message AddCustomerAO {
+  string userID = 1;
+  string name = 2;
+  string markName = 3;
+  string phone = 4;
+}
+
+message UpdateCustomerAO {
+  string userID = 1;
+  string markName = 2;
+  string oldMarkName = 3;
+}
+
+message GetCustomerInRobotChatAO {
+  string remark = 1;
+  string externalUserID = 2;
+}
+
+message RequestAO {
+  google.protobuf.Any data = 1;
+  repeated google.protobuf.Any dataList = 2;
+  google.protobuf.Any map = 3;
+  repeated google.protobuf.Any mapList = 4;
+}
+
+message ResponseVO {
+  int32 code = 1;
+  string msg = 2;
+  //  google.protobuf.Any data = 3;
+  google.protobuf.Any data = 3;
+  repeated google.protobuf.Any dataList = 4;
+  google.protobuf.Any map = 5;
+  repeated google.protobuf.Any mapList = 6;
+}
+
+message KeyValue {
+  string key = 1;
+  google.protobuf.Any value = 2;
+}
