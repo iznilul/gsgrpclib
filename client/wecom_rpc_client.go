@@ -22,7 +22,6 @@
 // It interacts with the route guide service whose definition can be found in routeguide/route_guide.booking.
 package client
 
-import "C"
 import (
 	"context"
 	"github.com/iznilul/gsgrpclib/proto/wecom"

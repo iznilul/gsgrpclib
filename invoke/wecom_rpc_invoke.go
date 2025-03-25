@@ -1,4 +1,4 @@
-package gsgrpclib
+package invoke
 
 import (
 	"context"
