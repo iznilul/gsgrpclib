@@ -110,14 +110,14 @@ func InitWecomRpcClientConn() (*grpc.ClientConn, error) {
 	return conn, nil
 }
 
-func SetTimeout() (context.Context, context.CancelFunc) {
+func SetTimeout(ctx context.Context) (context.Context, context.CancelFunc) {
 	var timeout time.Duration
 	if Mode == "dev" {
 		timeout = 114514 * time.Second
 	} else {
 		timeout = 10 * time.Second
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	ctx, cancel := context.WithTimeout(ctx, timeout)
 	return ctx, cancel
 }
 
@@ -129,7 +129,7 @@ func InvokeWecomRPCMethod(ctx context.Context, methodName string, ao *wecom_rpc.
 	defer conn.Close()
 	client := wecom_rpc.NewWecomRPCClient(conn)
 
-	timeout, cancel := SetTimeout()
+	ctx, cancel := SetTimeout(ctx)
 	defer cancel()
 
 	method := reflect.ValueOf(client).MethodByName(methodName)
@@ -137,7 +137,7 @@ func InvokeWecomRPCMethod(ctx context.Context, methodName string, ao *wecom_rpc.
 		return nil, errors.New("method not found")
 	}
 
-	args := []reflect.Value{reflect.ValueOf(ctx), reflect.ValueOf(timeout), reflect.ValueOf(ao)}
+	args := []reflect.Value{reflect.ValueOf(ctx), reflect.ValueOf(ao)}
 	result := method.Call(args)
 
 	if result[0].IsValid() {
