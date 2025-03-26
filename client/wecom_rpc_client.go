@@ -77,6 +77,7 @@ func init() {
 	if err != nil {
 		panic(errors.Wrap(err, "failed on unmarshal config file"))
 	}
+	Config = conf
 }
 
 func customInterceptor(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
