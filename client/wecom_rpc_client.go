@@ -41,10 +41,14 @@ const DEV = "dev"
 const TEST = "test"
 const PROD = "prod"
 
-type RpcConfig struct {
+type Configuration struct {
+	ServerConfig ServerConfig
+}
+type ServerConfig struct {
 	RpcServerPort      string
 	RpcWecomHost       string
 	RpcBusinessHost    string
+	RpcBookingsHost    string
 	RpcTrackHost       string
 	Tls                bool
 	CertFile           string
@@ -54,7 +58,7 @@ type RpcConfig struct {
 }
 
 var Mode string
-var Config *RpcConfig
+var Config *Configuration
 
 func init() {
 	if args := os.Args; len(args) > 1 && args[1] == "prod" {
@@ -64,7 +68,7 @@ func init() {
 	} else {
 		Mode = DEV
 	}
-	conf := new(RpcConfig)
+	conf := new(Configuration)
 	viper.AddConfigPath("./conf")
 	viper.SetConfigName("config." + Mode)
 	viper.SetConfigType("toml")
@@ -91,8 +95,8 @@ func customInterceptor(ctx context.Context, method string, req, reply interface{
 
 func InitWecomRpcClientConn() (*grpc.ClientConn, error) {
 	var opts []grpc.DialOption
-	if Config.Tls {
-		creds, err := credentials.NewClientTLSFromFile(Config.CaFile, Config.ServerNameOverride)
+	if Config.ServerConfig.Tls {
+		creds, err := credentials.NewClientTLSFromFile(Config.ServerConfig.CaFile, Config.ServerConfig.ServerNameOverride)
 		if err != nil {
 			log.Fatalf("Failed to create TLS credentials: %v", err)
 		}
@@ -103,7 +107,7 @@ func InitWecomRpcClientConn() (*grpc.ClientConn, error) {
 
 	opts = append(opts, grpc.WithUnaryInterceptor(customInterceptor))
 
-	conn, err := grpc.NewClient(Config.RpcWecomHost, opts...)
+	conn, err := grpc.NewClient(Config.ServerConfig.RpcWecomHost, opts...)
 	if err != nil {
 		return nil, err
 	}
