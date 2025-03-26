@@ -590,7 +590,7 @@ func InvokeRpcWecomFindSupplierList(map2 map[string]interface{}, ctx context.Con
 		return nil, nil, err
 	}
 	mapList := utils.ParseAnyToMapList(vo.MapList)
-	count := utils.ParseAnyToData(vo.Count)
+	count := utils.ParseAnyToData(vo.Data)
 	return mapList, count, nil
 }
 
