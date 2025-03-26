@@ -76,6 +76,20 @@ func InvokeRpcGetUserDetailList(ctx context.Context) ([]map[string]interface{}, 
 	return mapList, nil
 }
 
+func InvokeRpcGetUserDetailByUserID(userID string, ctx context.Context) (map[string]interface{}, error) {
+	data, err := utils.ParseDataToAny(userID)
+	if err != nil {
+		return nil, err
+	}
+	ao := &wecom_rpc.RequestAO{Data: data}
+	vo, err := client.InvokeWecomRPCMethod(ctx, "GetUserDetailByUserID", ao)
+	if err != nil {
+		return nil, err
+	}
+	map1 := utils.ParseAnyToMap(vo.Map)
+	return map1, nil
+}
+
 func InvokeRpcSendTextMsg(requestUserID, userID, msg string, ctx context.Context) error {
 	map1 := map[string]interface{}{
 		"requestUserID": requestUserID,
