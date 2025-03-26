@@ -26,72 +26,21 @@ import (
 	"context"
 	"github.com/iznilul/gsgrpclib/proto/wecom"
 	"github.com/pkg/errors"
-	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/grpc/metadata"
 	"log"
-	"os"
 	"reflect"
-	"time"
 )
 
-const DEV = "dev"
-const TEST = "test"
-const PROD = "prod"
-
-type Configuration struct {
-	ServerConfig ServerConfig
-}
-type ServerConfig struct {
-	RpcServerPort      string
-	RpcWecomHost       string
-	RpcBusinessHost    string
-	RpcBookingsHost    string
-	RpcTrackHost       string
-	Tls                bool
-	CertFile           string
-	KeyFile            string
-	CaFile             string
-	ServerNameOverride string
-}
-
-var Mode string
-var Config *Configuration
-
-func init() {
-	if args := os.Args; len(args) > 1 && args[1] == "prod" {
-		Mode = PROD
-	} else if args := os.Args; len(args) > 1 && args[1] == "test" {
-		Mode = TEST
-	} else {
-		Mode = DEV
-	}
-	conf := new(Configuration)
-	viper.AddConfigPath("./conf")
-	viper.SetConfigName("config." + Mode)
-	viper.SetConfigType("toml")
-
-	err := viper.ReadInConfig()
-	if err != nil {
-		panic(errors.Wrap(err, "failed on reading config file"))
-	}
-	err = viper.Unmarshal(&conf)
-	if err != nil {
-		panic(errors.Wrap(err, "failed on unmarshal config file"))
-	}
-	Config = conf
-}
-
-func customInterceptor(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-	// Add a custom value to the context
-	ctx = metadata.AppendToOutgoingContext(ctx, "from", "kpi")
-	// Perform any other logic before invoking the RPC method
-	//global.Info.Info("Added custom value to context before calling method %s", method)
-	// Call the RPC method with the updated context
-	return invoker(ctx, method, req, reply, cc, opts...)
-}
+//func customInterceptor(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+//	// Add a custom value to the context
+//	ctx = metadata.AppendToOutgoingContext(ctx, "from", "kpi")
+//	// Perform any other logic before invoking the RPC method
+//	//global.Info.Info("Added custom value to context before calling method %s", method)
+//	// Call the RPC method with the updated context
+//	return invoker(ctx, method, req, reply, cc, opts...)
+//}
 
 func InitWecomRpcClientConn() (*grpc.ClientConn, error) {
 	var opts []grpc.DialOption
@@ -105,24 +54,13 @@ func InitWecomRpcClientConn() (*grpc.ClientConn, error) {
 		opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	}
 
-	opts = append(opts, grpc.WithUnaryInterceptor(customInterceptor))
+	//opts = append(opts, grpc.WithUnaryInterceptor(customInterceptor))
 
 	conn, err := grpc.NewClient(Config.ServerConfig.RpcWecomHost, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return conn, nil
-}
-
-func SetTimeout(ctx context.Context) (context.Context, context.CancelFunc) {
-	var timeout time.Duration
-	if Mode == "dev" {
-		timeout = 114514 * time.Second
-	} else {
-		timeout = 10 * time.Second
-	}
-	ctx, cancel := context.WithTimeout(ctx, timeout)
-	return ctx, cancel
 }
 
 func InvokeWecomRPCMethod(ctx context.Context, methodName string, ao *wecom_rpc.RequestAO) (*wecom_rpc.ResponseVO, error) {
