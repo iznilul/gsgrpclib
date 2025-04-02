@@ -18,7 +18,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.28.0
-// source: pkg/rpc/wecom/wecom-rpc.proto
+// source: proto/wecom/wecom-rpc.proto
 
 package wecom_rpc
 
@@ -83,6 +83,8 @@ const (
 	WecomRPC_GetNeedNotifyCustomerList_FullMethodName       = "/wrpc.WecomRPC/GetNeedNotifyCustomerList"
 	WecomRPC_FindClaimedCustomer_FullMethodName             = "/wrpc.WecomRPC/FindClaimedCustomer"
 	WecomRPC_SaveCustomerPointRecord_FullMethodName         = "/wrpc.WecomRPC/SaveCustomerPointRecord"
+	WecomRPC_GetCustomerPointRecord_FullMethodName          = "/wrpc.WecomRPC/GetCustomerPointRecord"
+	WecomRPC_ListCustomerPointRecord_FullMethodName         = "/wrpc.WecomRPC/ListCustomerPointRecord"
 )
 
 // WecomRPCClient is the client API for WecomRPC service.
@@ -139,6 +141,8 @@ type WecomRPCClient interface {
 	GetNeedNotifyCustomerList(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	FindClaimedCustomer(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	SaveCustomerPointRecord(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	GetCustomerPointRecord(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	ListCustomerPointRecord(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 }
 
 type wecomRPCClient struct {
@@ -629,6 +633,26 @@ func (c *wecomRPCClient) SaveCustomerPointRecord(ctx context.Context, in *Reques
 	return out, nil
 }
 
+func (c *wecomRPCClient) GetCustomerPointRecord(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, WecomRPC_GetCustomerPointRecord_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *wecomRPCClient) ListCustomerPointRecord(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, WecomRPC_ListCustomerPointRecord_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WecomRPCServer is the server API for WecomRPC service.
 // All implementations must embed UnimplementedWecomRPCServer
 // for forward compatibility.
@@ -683,6 +707,8 @@ type WecomRPCServer interface {
 	GetNeedNotifyCustomerList(context.Context, *RequestAO) (*ResponseVO, error)
 	FindClaimedCustomer(context.Context, *RequestAO) (*ResponseVO, error)
 	SaveCustomerPointRecord(context.Context, *RequestAO) (*ResponseVO, error)
+	GetCustomerPointRecord(context.Context, *RequestAO) (*ResponseVO, error)
+	ListCustomerPointRecord(context.Context, *RequestAO) (*ResponseVO, error)
 	mustEmbedUnimplementedWecomRPCServer()
 }
 
@@ -836,6 +862,12 @@ func (UnimplementedWecomRPCServer) FindClaimedCustomer(context.Context, *Request
 }
 func (UnimplementedWecomRPCServer) SaveCustomerPointRecord(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SaveCustomerPointRecord not implemented")
+}
+func (UnimplementedWecomRPCServer) GetCustomerPointRecord(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCustomerPointRecord not implemented")
+}
+func (UnimplementedWecomRPCServer) ListCustomerPointRecord(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListCustomerPointRecord not implemented")
 }
 func (UnimplementedWecomRPCServer) mustEmbedUnimplementedWecomRPCServer() {}
 func (UnimplementedWecomRPCServer) testEmbeddedByValue()                  {}
@@ -1722,6 +1754,42 @@ func _WecomRPC_SaveCustomerPointRecord_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WecomRPC_GetCustomerPointRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WecomRPCServer).GetCustomerPointRecord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WecomRPC_GetCustomerPointRecord_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WecomRPCServer).GetCustomerPointRecord(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WecomRPC_ListCustomerPointRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WecomRPCServer).ListCustomerPointRecord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WecomRPC_ListCustomerPointRecord_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WecomRPCServer).ListCustomerPointRecord(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WecomRPC_ServiceDesc is the grpc.ServiceDesc for WecomRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1921,7 +1989,15 @@ var WecomRPC_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "SaveCustomerPointRecord",
 			Handler:    _WecomRPC_SaveCustomerPointRecord_Handler,
 		},
+		{
+			MethodName: "GetCustomerPointRecord",
+			Handler:    _WecomRPC_GetCustomerPointRecord_Handler,
+		},
+		{
+			MethodName: "ListCustomerPointRecord",
+			Handler:    _WecomRPC_ListCustomerPointRecord_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "pkg/rpc/wecom/wecom-rpc.proto",
+	Metadata: "proto/wecom/wecom-rpc.proto",
 }

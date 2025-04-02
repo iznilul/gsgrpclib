@@ -20,7 +20,7 @@ option go_package = "github.com/iznilul/wecom_rpc";
 //option java_multiple_files = true;
 //option java_package = "io.grpc.examples.routeguide";
 //option java_outer_classname = "RouteGuideProto";
-//protoc  --go_out=. --go_opt=paths=source_relative     --go-grpc_out=. --go-grpc_opt=paths=source_relative     pkg/rpc/wecom/wecom-rpc.proto
+//protoc  --go_out=. --go_opt=paths=source_relative     --go-grpc_out=. --go-grpc_opt=paths=source_relative     proto/wecom/wecom-rpc.proto
 
 package wrpc;
 
@@ -74,6 +74,8 @@ service WecomRPC {
   rpc GetNeedNotifyCustomerList(RequestAO) returns (ResponseVO) {}
   rpc FindClaimedCustomer(RequestAO) returns (ResponseVO) {}
   rpc SaveCustomerPointRecord(RequestAO) returns (ResponseVO) {}
+  rpc GetCustomerPointRecord(RequestAO) returns (ResponseVO) {}
+  rpc ListCustomerPointRecord(RequestAO) returns (ResponseVO) {}
 }
 
 message MessageAO {
