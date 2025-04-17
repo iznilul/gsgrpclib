@@ -43,12 +43,10 @@ func InvokeRpcFindOrderInfo(openID string, currentPage, pageSize int, ctx contex
 	return vo, count, nil
 }
 
-func InvokeRpcGenerateOrder(inquiry map[string]interface{}, businessType int, ctx context.Context) error {
+func InvokeRpcGenerateOrder(inquiry map[string]interface{}, ctx context.Context) error {
 	toAny, _ := utils.ParseMapToAny(inquiry)
-	data, _ := utils.ParseDataToAny(businessType)
 	ao := &business_rpc.RequestAO{
 		Map:  toAny,
-		Data: data,
 	}
 	_, err := client.InvokeBusinessRPCMethod(ctx, "GenerateOrder", ao)
 	if err != nil {
