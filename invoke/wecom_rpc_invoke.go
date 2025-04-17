@@ -715,3 +715,62 @@ func InvokeRPCSaveCustomerPointRecord(data int, map1 map[string]interface{}, ctx
 	}
 	return nil
 }
+
+func InvokeRpcSyncContactWayList(ctx context.Context) ([]interface{}, error) {
+	vo, err := client.InvokeWecomRPCMethod(ctx, "SyncContactWayList", &wecom_rpc.RequestAO{})
+	if err != nil {
+		return nil, err
+	}
+	list := utils.ParseAnyToDataList(vo.DataList)
+	return list, nil
+}
+
+func InvokeRpcFlushContactWay(configID string, ctx context.Context) (map[string]interface{}, error) {
+	data, err := utils.ParseDataToAny(configID)
+	if err != nil {
+		return nil, err
+	}
+	ao := &wecom_rpc.RequestAO{
+		Data: data,
+	}
+	vo, err := client.InvokeWecomRPCMethod(ctx, "FlushContactWay", ao)
+	if err != nil {
+		return nil, err
+	}
+	map1 := utils.ParseAnyToMap(vo.Map)
+	return map1, nil
+}
+
+func InvokeRpcGetCustomerPointRecord(openID string, ctx context.Context) (interface{}, []map[string]interface{}, error) {
+	data, err := utils.ParseDataToAny(openID)
+	if err != nil {
+		return nil, nil, err
+	}
+	ao := &wecom_rpc.RequestAO{
+		Data: data,
+	}
+	vo, err := client.InvokeWecomRPCMethod(ctx, "GetCustomerPointRecord", ao)
+	if err != nil {
+		return nil, nil, err
+	}
+	point := utils.ParseAnyToData(vo.Data)
+	list := utils.ParseAnyToMapList(vo.MapList)
+	return point, list, nil
+}
+
+func InvokeRPCListCustomerPointRecord(map1 map[string]interface{}, ctx context.Context) ([]map[string]interface{}, interface{}, error) {
+	toMap, err := utils.ParseMapToAny(map1)
+	if err != nil {
+		return nil, nil, err
+	}
+	ao := &wecom_rpc.RequestAO{
+		Map: toMap,
+	}
+	vo, err := client.InvokeWecomRPCMethod(ctx, "ListCustomerPointRecord", ao)
+	if err != nil {
+		return nil, nil, err
+	}
+	mapList := utils.ParseAnyToMapList(vo.MapList)
+	data := utils.ParseAnyToData(vo.Data)
+	return mapList, data, nil
+}
