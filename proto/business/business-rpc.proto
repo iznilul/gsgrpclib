@@ -26,18 +26,14 @@ package brpc;
 
 // Interface exported by the server.
 service BusinessRPC {
-  rpc GenerateOrder(GenerateOrderAO) returns (ResponseVO) {}
-  rpc FindOrderInfo(OrderInfoAO) returns (ResponseVO) {}
-  rpc FindProcInstByChatID(ChatIDAO) returns (ResponseVO) {}
+  rpc GenerateOrder(RequestAO) returns (ResponseVO) {}
+  rpc FindOrderInfo(RequestAO) returns (ResponseVO) {}
+  rpc FindProcInstByChatID(RequestAO) returns (ResponseVO) {}
   rpc UpdateTrack(RequestAO) returns (ResponseVO) {}
   rpc FindContentNoList(RequestAO) returns (ResponseVO) {}
   rpc UpdateNotifyMode(RequestAO) returns (ResponseVO) {}
   rpc UpdateCustomerRemark(RequestAO) returns (ResponseVO) {}
   rpc UpdateMiniAndAccount(RequestAO) returns (ResponseVO) {}
-}
-
-message ChatIDAO {
-  string chatID = 1;
 }
 
 message IdentityLink {
@@ -74,23 +70,6 @@ message NowTask{
   string createTime = 8;
 }
 
-message OrderInfoAO {
-  string openID = 1;
-  int32 currentPage = 2;
-  int32 pageSize = 3;
-}
-
-message GenerateOrderAO {
-  string inquiryNumber = 1;
-  string item = 2;
-  string origin = 3;
-  string dest = 4;
-  int32 businessType = 5;
-  string saleUserID = 6;
-  string saleUserName = 7;
-  string openID = 8;
-}
-
 message ProcInstVO {
   ProcInst procInst = 1;
   repeated IdentityLink identityLinkList = 2;
@@ -103,7 +82,6 @@ message RequestAO {
   google.protobuf.Any map = 3;
   repeated google.protobuf.Any mapList = 4;
 }
-
 
 message ResponseVO {
   int32 code = 1;

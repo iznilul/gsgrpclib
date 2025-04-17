@@ -51,9 +51,9 @@ const (
 //
 // Interface exported by the server.
 type BusinessRPCClient interface {
-	GenerateOrder(ctx context.Context, in *GenerateOrderAO, opts ...grpc.CallOption) (*ResponseVO, error)
-	FindOrderInfo(ctx context.Context, in *OrderInfoAO, opts ...grpc.CallOption) (*ResponseVO, error)
-	FindProcInstByChatID(ctx context.Context, in *ChatIDAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	GenerateOrder(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	FindOrderInfo(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	FindProcInstByChatID(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	UpdateTrack(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	FindContentNoList(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	UpdateNotifyMode(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
@@ -69,7 +69,7 @@ func NewBusinessRPCClient(cc grpc.ClientConnInterface) BusinessRPCClient {
 	return &businessRPCClient{cc}
 }
 
-func (c *businessRPCClient) GenerateOrder(ctx context.Context, in *GenerateOrderAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+func (c *businessRPCClient) GenerateOrder(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ResponseVO)
 	err := c.cc.Invoke(ctx, BusinessRPC_GenerateOrder_FullMethodName, in, out, cOpts...)
@@ -79,7 +79,7 @@ func (c *businessRPCClient) GenerateOrder(ctx context.Context, in *GenerateOrder
 	return out, nil
 }
 
-func (c *businessRPCClient) FindOrderInfo(ctx context.Context, in *OrderInfoAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+func (c *businessRPCClient) FindOrderInfo(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ResponseVO)
 	err := c.cc.Invoke(ctx, BusinessRPC_FindOrderInfo_FullMethodName, in, out, cOpts...)
@@ -89,7 +89,7 @@ func (c *businessRPCClient) FindOrderInfo(ctx context.Context, in *OrderInfoAO, 
 	return out, nil
 }
 
-func (c *businessRPCClient) FindProcInstByChatID(ctx context.Context, in *ChatIDAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+func (c *businessRPCClient) FindProcInstByChatID(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ResponseVO)
 	err := c.cc.Invoke(ctx, BusinessRPC_FindProcInstByChatID_FullMethodName, in, out, cOpts...)
@@ -155,9 +155,9 @@ func (c *businessRPCClient) UpdateMiniAndAccount(ctx context.Context, in *Reques
 //
 // Interface exported by the server.
 type BusinessRPCServer interface {
-	GenerateOrder(context.Context, *GenerateOrderAO) (*ResponseVO, error)
-	FindOrderInfo(context.Context, *OrderInfoAO) (*ResponseVO, error)
-	FindProcInstByChatID(context.Context, *ChatIDAO) (*ResponseVO, error)
+	GenerateOrder(context.Context, *RequestAO) (*ResponseVO, error)
+	FindOrderInfo(context.Context, *RequestAO) (*ResponseVO, error)
+	FindProcInstByChatID(context.Context, *RequestAO) (*ResponseVO, error)
 	UpdateTrack(context.Context, *RequestAO) (*ResponseVO, error)
 	FindContentNoList(context.Context, *RequestAO) (*ResponseVO, error)
 	UpdateNotifyMode(context.Context, *RequestAO) (*ResponseVO, error)
@@ -173,13 +173,13 @@ type BusinessRPCServer interface {
 // pointer dereference when methods are called.
 type UnimplementedBusinessRPCServer struct{}
 
-func (UnimplementedBusinessRPCServer) GenerateOrder(context.Context, *GenerateOrderAO) (*ResponseVO, error) {
+func (UnimplementedBusinessRPCServer) GenerateOrder(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateOrder not implemented")
 }
-func (UnimplementedBusinessRPCServer) FindOrderInfo(context.Context, *OrderInfoAO) (*ResponseVO, error) {
+func (UnimplementedBusinessRPCServer) FindOrderInfo(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindOrderInfo not implemented")
 }
-func (UnimplementedBusinessRPCServer) FindProcInstByChatID(context.Context, *ChatIDAO) (*ResponseVO, error) {
+func (UnimplementedBusinessRPCServer) FindProcInstByChatID(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindProcInstByChatID not implemented")
 }
 func (UnimplementedBusinessRPCServer) UpdateTrack(context.Context, *RequestAO) (*ResponseVO, error) {
@@ -219,7 +219,7 @@ func RegisterBusinessRPCServer(s grpc.ServiceRegistrar, srv BusinessRPCServer) {
 }
 
 func _BusinessRPC_GenerateOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GenerateOrderAO)
+	in := new(RequestAO)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -231,13 +231,13 @@ func _BusinessRPC_GenerateOrder_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: BusinessRPC_GenerateOrder_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BusinessRPCServer).GenerateOrder(ctx, req.(*GenerateOrderAO))
+		return srv.(BusinessRPCServer).GenerateOrder(ctx, req.(*RequestAO))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _BusinessRPC_FindOrderInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OrderInfoAO)
+	in := new(RequestAO)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -249,13 +249,13 @@ func _BusinessRPC_FindOrderInfo_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: BusinessRPC_FindOrderInfo_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BusinessRPCServer).FindOrderInfo(ctx, req.(*OrderInfoAO))
+		return srv.(BusinessRPCServer).FindOrderInfo(ctx, req.(*RequestAO))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _BusinessRPC_FindProcInstByChatID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ChatIDAO)
+	in := new(RequestAO)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -267,7 +267,7 @@ func _BusinessRPC_FindProcInstByChatID_Handler(srv interface{}, ctx context.Cont
 		FullMethod: BusinessRPC_FindProcInstByChatID_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BusinessRPCServer).FindProcInstByChatID(ctx, req.(*ChatIDAO))
+		return srv.(BusinessRPCServer).FindProcInstByChatID(ctx, req.(*RequestAO))
 	}
 	return interceptor(ctx, in, info, handler)
 }
