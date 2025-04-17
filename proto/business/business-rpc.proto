@@ -1,0 +1,122 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//edition = "2023";
+syntax = "proto3";
+import "proto/any.proto";
+//option features.field_presence = IMPLICIT;
+option go_package = "github.com/iznilul/business_rpc";
+//option java_multiple_files = true;
+//option java_package = "io.grpc.examples.routeguide";
+//option java_outer_classname = "RouteGuideProto";
+//protoc --go_out=. --go_opt=paths=source_relative     --go-grpc_out=. --go-grpc_opt=paths=source_relative     proto/business/business-rpc.proto
+
+package brpc;
+
+// Interface exported by the server.
+service BusinessRPC {
+  rpc GenerateOrder(GenerateOrderAO) returns (ResponseVO) {}
+  rpc FindOrderInfo(OrderInfoAO) returns (ResponseVO) {}
+  rpc FindProcInstByChatID(ChatIDAO) returns (ResponseVO) {}
+  rpc UpdateTrack(RequestAO) returns (ResponseVO) {}
+  rpc FindContentNoList(RequestAO) returns (ResponseVO) {}
+  rpc UpdateNotifyMode(RequestAO) returns (ResponseVO) {}
+  rpc UpdateCustomerRemark(RequestAO) returns (ResponseVO) {}
+  rpc UpdateMiniAndAccount(RequestAO) returns (ResponseVO) {}
+}
+
+message ChatIDAO {
+  string chatID = 1;
+}
+
+message IdentityLink {
+  int32 ID = 1;
+  string userName = 3;
+  string taskName = 4;
+  repeated string comment = 5;
+  string finishedTime = 6;
+  bool isPass = 7;
+}
+
+message ProcInst{
+  int32 ID = 1;
+  string serialNumber = 2;
+  string procDefName = 3;
+  string title = 4;
+  string startTime = 5;
+  string endTime = 6;
+  repeated string globalVar = 7;
+  //  map<string, google.protobuf.Any> globalVar = 7;
+  repeated string variable = 8;
+  //  map<string, google.protobuf.Any> variable = 8;
+  string firstOperator = 10;
+  string secondOperator = 11;
+  string saleUserName = 12;
+  bool isFinished = 13;
+}
+
+message NowTask{
+  int32 ID = 1;
+  string taskName = 3;
+  repeated string form = 4;
+  string assigneeName = 7;
+  string createTime = 8;
+}
+
+message OrderInfoAO {
+  string openID = 1;
+  int32 currentPage = 2;
+  int32 pageSize = 3;
+}
+
+message GenerateOrderAO {
+  string inquiryNumber = 1;
+  string item = 2;
+  string origin = 3;
+  string dest = 4;
+  int32 businessType = 5;
+  string saleUserID = 6;
+  string saleUserName = 7;
+  string openID = 8;
+}
+
+message ProcInstVO {
+  ProcInst procInst = 1;
+  repeated IdentityLink identityLinkList = 2;
+  optional NowTask nowTask = 3;
+}
+
+message RequestAO {
+  google.protobuf.Any data = 1;
+  repeated google.protobuf.Any dataList = 2;
+  google.protobuf.Any map = 3;
+  repeated google.protobuf.Any mapList = 4;
+}
+
+
+message ResponseVO {
+  int32 code = 1;
+  string msg = 2;
+  //  google.protobuf.Any data = 3;
+  google.protobuf.Any data = 3;
+  repeated google.protobuf.Any dataList = 4;
+  google.protobuf.Any map = 5;
+  repeated google.protobuf.Any mapList = 6;
+  repeated ProcInstVO procInstVOList = 7;
+}
+
+message KeyValue {
+  string key = 1;
+  google.protobuf.Any value = 2;
+}
