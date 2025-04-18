@@ -120,30 +120,30 @@ func InvokeRpcTrackQueryFieldList(table, field, value string, ctx context.Contex
 	return dataList, nil
 }
 
-func InvokeRpcTrackSendSyncRequest(comment map[string]interface{}, userID string, inst map[string]string, ctx context.Context) (*track_rpc.ResponseVO, error) {
+func InvokeRpcTrackSendSyncRequest(comment map[string]interface{}, userID string, inst map[string]string, ctx context.Context) error {
 	// 判断这个任务节点是否包括API请求的字段
 	startStation := comment["task_start_station_autocomplete"]
 	if startStation == nil {
-		return nil, nil
+		return nil
 	}
 	endStation := comment["task_end_station_autocomplete"]
 	if endStation == nil {
-		return nil, nil
+		return nil
 	}
 	departureDirection := comment["departure_direction"]
 	if departureDirection == nil {
-		return nil, nil
+		return nil
 	}
 
 	var map1 map[string]interface{}
 
 	globalVar := inst["globalVar"]
 	if globalVar == "" {
-		return nil, nil
+		return errors.New("globalVar is empty")
 	}
 	err := json.Unmarshal([]byte(globalVar), &map1)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	var contentNoList []string
@@ -168,7 +168,7 @@ func InvokeRpcTrackSendSyncRequest(comment map[string]interface{}, userID string
 		changeCarIDListString := map1["change_car_id"].(string)
 		changeCarIDList := strings.Split(changeCarIDListString, ";")
 		if len(changeCarIDList) == 0 {
-			return nil, errors.New("换装车号不能为空")
+			return errors.New("换装车号不能为空")
 		}
 		for _, changeCarID := range changeCarIDList {
 			contentNoList = append(contentNoList, changeCarID)
@@ -184,20 +184,20 @@ func InvokeRpcTrackSendSyncRequest(comment map[string]interface{}, userID string
 	}
 	toAny, err := utils.ParseMapToAny(map1)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	ao := &track_rpc.RequestAO{
 		Map: toAny,
 	}
 
-	vo, err := client.InvokeTrackRPCMethod(ctx, "SendSyncRequest", ao)
+	_, err = client.InvokeTrackRPCMethod(ctx, "SendSyncRequest", ao)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return vo, nil
+	return nil
 }
 
-func InvokeRpcTrackFindStationList(value string, pageSize, currentPage int, ctx context.Context) (*track_rpc.ResponseVO, error) {
+func InvokeRpcTrackFindStationList(value string, pageSize, currentPage int, ctx context.Context) ([]map[string]interface{}, interface{}, error) {
 	map1 := map[string]interface{}{
 		"value":       value,
 		"pageSize":    pageSize,
@@ -205,16 +205,18 @@ func InvokeRpcTrackFindStationList(value string, pageSize, currentPage int, ctx 
 	}
 	toAny, err := utils.ParseMapToAny(map1)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	ao := &track_rpc.RequestAO{
 		Map: toAny,
 	}
 	vo, err := client.InvokeTrackRPCMethod(ctx, "FindStationList", ao)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return vo, nil
+	mapList := utils.ParseAnyToMapList(vo.MapList)
+	data := utils.ParseAnyToData(vo.Data)
+	return mapList, data, nil
 }
 
 func InvokeRpcTrackFindContentNoListBySerialNumberList(serialNumberList []string, ctx context.Context) ([]string, error) {
