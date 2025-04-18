@@ -19,7 +19,7 @@ type ServerConfig struct {
 	RpcServerPort      string
 	RpcWecomHost       string
 	RpcBusinessHost    string
-	RpcBookingsHost    string
+	RpcBookingHost    string
 	RpcTrackHost       string
 	Tls                bool
 	CertFile           string

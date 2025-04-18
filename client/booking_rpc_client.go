@@ -45,7 +45,7 @@ func InitBookingRpcClientConn() (*grpc.ClientConn, error) {
 		opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	}
 
-	conn, err := grpc.NewClient(Config.ServerConfig.RpcBookingsHost, opts...)
+	conn, err := grpc.NewClient(Config.ServerConfig.RpcBookingHost, opts...)
 	if err != nil {
 		//global.Error.Error("连接rpc服务器失败", err)
 		return nil, err
