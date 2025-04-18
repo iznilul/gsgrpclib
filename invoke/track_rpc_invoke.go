@@ -99,7 +99,7 @@ func InvokeRPCTrackFindTrackList(contentNo string, ctx context.Context) (data ma
 	}
 }
 
-func InvokeRpcTrackQueryFieldList(table, field, value string, ctx context.Context) (*track_rpc.ResponseVO, error) {
+func InvokeRpcTrackQueryFieldList(table, field, value string, ctx context.Context) ([]interface{}, error) {
 	map1 := map[string]interface{}{
 		"table": table,
 		"field": field,
@@ -116,7 +116,8 @@ func InvokeRpcTrackQueryFieldList(table, field, value string, ctx context.Contex
 	if err != nil {
 		return nil, err
 	}
-	return vo, nil
+	dataList := utils.ParseAnyToDataList(vo.DataList)
+	return dataList, nil
 }
 
 func InvokeRpcTrackSendSyncRequest(comment map[string]interface{}, userID string, inst map[string]string, ctx context.Context) (*track_rpc.ResponseVO, error) {

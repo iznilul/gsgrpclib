@@ -36,7 +36,7 @@ func InvokeRpcBookingFindMiniUserList(ctx context.Context) ([]map[string]interfa
 	return miniUserList, nil
 }
 
-func InvokeRpcBookingFindMiniUserListByOpenIDList(openIDList []interface{}, ctx context.Context) ([]map[string]interface{}, error) {
+func InvokeRpcBookingFindMiniUserListByOpenIDList(openIDList []string, ctx context.Context) ([]map[string]interface{}, error) {
 	jsonStr, _ := util.ToJSONStr(openIDList)
 	datalist, err := utils.ParseJsonStrToAnyList(jsonStr)
 	if err != nil {
