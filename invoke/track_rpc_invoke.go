@@ -252,7 +252,7 @@ func InvokeRpcTrackFindOngoingTrackList(ao *track_rpc.RequestAO, ctx context.Con
 func InvokeRpcTrackFindHistoryTrackList(ao *track_rpc.RequestAO, ctx context.Context) ([]map[string]interface{}, error) {
 	vo, err := client.InvokeTrackRPCMethod(ctx, "FindHistoryTrackList", ao)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	mapList := utils.ParseAnyToMapList(vo.MapList)
 	return mapList, nil
