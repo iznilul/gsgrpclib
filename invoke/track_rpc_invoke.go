@@ -239,3 +239,21 @@ func InvokeRpcTrackFindContentNoListBySerialNumberList(serialNumberList []string
 	}
 	return contentNoList, nil
 }
+
+func InvokeRpcTrackFindOngoingTrackList(ao *track_rpc.RequestAO, ctx context.Context) ([]map[string]interface{}, error) {
+	vo, err := client.InvokeTrackRPCMethod(ctx, "FindOngoingTrackList", ao)
+	if err != nil {
+		return nil, err
+	}
+	mapList := utils.ParseAnyToMapList(vo.MapList)
+	return mapList, nil
+}
+
+func InvokeRpcTrackFindHistoryTrackList(ao *track_rpc.RequestAO, ctx context.Context) ([]map[string]interface{}, error) {
+	vo, err := client.InvokeTrackRPCMethod(ctx, "FindHistoryTrackList", ao)
+	if err != nil {
+		return nil, nil, err
+	}
+	mapList := utils.ParseAnyToMapList(vo.MapList)
+	return mapList, nil
+}
