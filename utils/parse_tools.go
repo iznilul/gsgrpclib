@@ -99,3 +99,11 @@ func ParseJsonStrToAnyList(jsonStr string) ([]*any.Any, error) {
 	}
 	return anyList, nil
 }
+
+func ReverseMapArray(arr []map[string]interface{}) []map[string]interface{} {
+	var result []map[string]interface{}
+	for i := len(arr) - 1; i >= 0; i-- {
+		result = append(result, arr[i])
+	}
+	return result
+}
