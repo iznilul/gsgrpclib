@@ -440,7 +440,7 @@ func InvokeRpcGetAccountUserList(ctx context.Context) ([]map[string]interface{},
 	return mapList, nil
 }
 
-func InvokeRpcGetAccountUserListByOpenIDList(openIDList []string, ctx context.Context) (map[string]interface{}, error) {
+func InvokeRpcGetAccountUserListByOpenIDList(openIDList []string, ctx context.Context) ([]map[string]interface{}, error) {
 	conn, err := client.InitWecomRpcClientConn()
 	if err != nil {
 		return nil, err
@@ -454,8 +454,8 @@ func InvokeRpcGetAccountUserListByOpenIDList(openIDList []string, ctx context.Co
 	if err != nil {
 		return nil, err
 	}
-	map1 := utils.ParseAnyToMap(vo.Map)
-	return map1, nil
+	mapList := utils.ParseAnyToMapList(vo.MapList)
+	return mapList, nil
 }
 
 func InvokeRpcModifyAccountUserRemark(openID, remark string, ctx context.Context) error {
