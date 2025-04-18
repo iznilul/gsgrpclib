@@ -257,3 +257,27 @@ func InvokeRpcTrackFindHistoryTrackList(ao *track_rpc.RequestAO, ctx context.Con
 	mapList := utils.ParseAnyToMapList(vo.MapList)
 	return mapList, nil
 }
+
+func InvokeRpcTrackFinishTrack(contentNo string, ctx context.Context) error {
+	data, _ := utils.ParseDataToAny(contentNo)
+	ao := &track_rpc.RequestAO{
+		Data: data,
+	}
+	_, err := client.InvokeTrackRPCMethod(ctx, "FinishTrack", ao)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func InvokeRpcTrackSyncTrack(contentNo string, ctx context.Context) error {
+	data, _ := utils.ParseDataToAny(contentNo)
+	ao := &track_rpc.RequestAO{
+		Data: data,
+	}
+	_, err := client.InvokeTrackRPCMethod(ctx, "SyncTrack", ao)
+	if err != nil {
+		return err
+	}
+	return nil
+}
