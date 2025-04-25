@@ -76,6 +76,7 @@ service WecomRPC {
   rpc SaveCustomerPointRecord(RequestAO) returns (ResponseVO) {}
   rpc GetCustomerPointRecord(RequestAO) returns (ResponseVO) {}
   rpc ListCustomerPointRecord(RequestAO) returns (ResponseVO) {}
+  rpc ListUserByCond(RequestAO) returns (ResponseVO) {}
 }
 
 message MessageAO {

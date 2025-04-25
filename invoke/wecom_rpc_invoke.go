@@ -774,3 +774,20 @@ func InvokeRPCListCustomerPointRecord(map1 map[string]interface{}, ctx context.C
 	data := utils.ParseAnyToData(vo.Data)
 	return mapList, data, nil
 }
+
+func InvokeRPCListUserByCond(map1 map[string]interface{}, ctx context.Context) ([]map[string]interface{}, interface{}, error) {
+	toMap, err := utils.ParseMapToAny(map1)
+	if err != nil {
+		return nil, nil, err
+	}
+	ao := &wecom_rpc.RequestAO{
+		Map: toMap,
+	}
+	vo, err := client.InvokeWecomRPCMethod(ctx, "ListUserByCond", ao)
+	if err != nil {
+		return nil, nil, err
+	}
+	mapList := utils.ParseAnyToMapList(vo.MapList)
+	data := utils.ParseAnyToData(vo.Data)
+	return mapList, data, nil
+}
