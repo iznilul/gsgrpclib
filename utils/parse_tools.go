@@ -43,6 +43,15 @@ func ParseAnyToMapInt(data *any.Any) map[int]map[string]interface{} {
 	return result
 }
 
+func ParseAnyToMapIntList(data *any.Any) map[int][]map[string]interface{} {
+	var result map[int][]map[string]interface{}
+	err := json.Unmarshal(data.Value, &result)
+	if err != nil {
+		panic(errors.Wrap(err, "解析Any失败"))
+	}
+	return result
+}
+
 func ParseAnyToMapList(anyDataList []*any.Any) []map[string]interface{} {
 	var mapList []map[string]interface{}
 	for _, anyData := range anyDataList {

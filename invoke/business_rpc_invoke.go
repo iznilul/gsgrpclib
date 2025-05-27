@@ -160,7 +160,7 @@ func InvokeRPCQueryIndicatorCount(queryAO map[int]map[string]interface{}, ctx co
 	return result, nil
 }
 
-func InvokeRPCQueryIndicatorDetail(queryAO map[int]map[string]interface{}, ctx context.Context) (map[int]map[string]interface{}, error) {
+func InvokeRPCQueryIndicatorDetail(queryAO map[int]map[string]interface{}, ctx context.Context) (map[int][]map[string]interface{}, error) {
 	toAny, err := utils.ParseMapIntToAny(queryAO)
 	if err != nil {
 		return nil, err
@@ -172,6 +172,6 @@ func InvokeRPCQueryIndicatorDetail(queryAO map[int]map[string]interface{}, ctx c
 	if err != nil {
 		return nil, err
 	}
-	result := utils.ParseAnyToMapInt(vo.Map)
+	result := utils.ParseAnyToMapIntList(vo.Map)
 	return result, nil
 }
