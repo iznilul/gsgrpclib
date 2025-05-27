@@ -34,6 +34,7 @@ service BusinessRPC {
   rpc UpdateNotifyMode(RequestAO) returns (ResponseVO) {}
   rpc UpdateCustomerRemark(RequestAO) returns (ResponseVO) {}
   rpc UpdateMiniAndAccount(RequestAO) returns (ResponseVO) {}
+  rpc QueryIndicatorCount(RequestAO) returns (ResponseVO) {}
 }
 
 message IdentityLink {

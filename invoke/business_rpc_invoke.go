@@ -46,7 +46,7 @@ func InvokeRpcFindOrderInfo(openID string, currentPage, pageSize int, ctx contex
 func InvokeRpcGenerateOrder(inquiry map[string]interface{}, ctx context.Context) error {
 	toAny, _ := utils.ParseMapToAny(inquiry)
 	ao := &business_rpc.RequestAO{
-		Map:  toAny,
+		Map: toAny,
 	}
 	_, err := client.InvokeBusinessRPCMethod(ctx, "GenerateOrder", ao)
 	if err != nil {
@@ -142,4 +142,20 @@ func InvokeRpcUpdateTrack(serialNumber, userID, trackMsg string, validTrackMsgLi
 	}
 	_, err = client.InvokeBusinessRPCMethod(ctx, "UpdateTrack", ao)
 	return err
+}
+
+func InvokeRPCQueryIndicatorCount(queryAO map[int]map[string]interface{}, ctx context.Context) (map[int]map[string]interface{}, error) {
+	toAny, err := utils.ParseMapIntToAny(queryAO)
+	if err != nil {
+		return nil, err
+	}
+	ao := &business_rpc.RequestAO{
+		Map: toAny,
+	}
+	vo, err := client.InvokeBusinessRPCMethod(ctx, "QueryIndicatorCount", ao)
+	if err != nil {
+		return nil, err
+	}
+	result := utils.ParseAnyToMapInt(vo.Map)
+	return result, nil
 }
