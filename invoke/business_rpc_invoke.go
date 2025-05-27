@@ -159,3 +159,19 @@ func InvokeRPCQueryIndicatorCount(queryAO map[int]map[string]interface{}, ctx co
 	result := utils.ParseAnyToMapInt(vo.Map)
 	return result, nil
 }
+
+func InvokeRPCQueryIndicatorDetail(queryAO map[int]map[string]interface{}, ctx context.Context) (map[int]map[string]interface{}, error) {
+	toAny, err := utils.ParseMapIntToAny(queryAO)
+	if err != nil {
+		return nil, err
+	}
+	ao := &business_rpc.RequestAO{
+		Map: toAny,
+	}
+	vo, err := client.InvokeBusinessRPCMethod(ctx, "QueryIndicatorDetail", ao)
+	if err != nil {
+		return nil, err
+	}
+	result := utils.ParseAnyToMapInt(vo.Map)
+	return result, nil
+}
