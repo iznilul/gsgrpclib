@@ -13,8 +13,7 @@ import (
 )
 
 func GenerateRequestAO(data interface{}, dataList []interface{}, map1 map[string]interface{}, mapList []map[string]interface{}) *track_rpc.RequestAO {
-	ao := &track_rpc.RequestAO{
-	}
+	ao := &track_rpc.RequestAO{}
 	if data != nil {
 		result, _ := utils.ParseDataToAny(data)
 		ao.Data = result
@@ -170,8 +169,12 @@ func InvokeRpcTrackSendSyncRequest(comment map[string]interface{}, userID string
 		if len(changeCarIDList) == 0 {
 			return errors.New("换装车号不能为空")
 		}
+		var repeatedIDMap = make(map[string]bool)
 		for _, changeCarID := range changeCarIDList {
-			contentNoList = append(contentNoList, changeCarID)
+			if !repeatedIDMap[changeCarID] {
+				repeatedIDMap[changeCarID] = true
+				contentNoList = append(contentNoList, changeCarID)
+			}
 		}
 	}
 
