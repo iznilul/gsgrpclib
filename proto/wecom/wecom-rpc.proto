@@ -77,6 +77,7 @@ service WecomRPC {
   rpc GetCustomerPointRecord(RequestAO) returns (ResponseVO) {}
   rpc ListCustomerPointRecord(RequestAO) returns (ResponseVO) {}
   rpc ListUserByCond(RequestAO) returns (ResponseVO) {}
+  rpc JudgeTodayIsWorkday(RequestAO) returns (ResponseVO) {}
 }
 
 message MessageAO {

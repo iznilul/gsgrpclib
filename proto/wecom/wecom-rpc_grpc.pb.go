@@ -86,6 +86,7 @@ const (
 	WecomRPC_GetCustomerPointRecord_FullMethodName          = "/wrpc.WecomRPC/GetCustomerPointRecord"
 	WecomRPC_ListCustomerPointRecord_FullMethodName         = "/wrpc.WecomRPC/ListCustomerPointRecord"
 	WecomRPC_ListUserByCond_FullMethodName                  = "/wrpc.WecomRPC/ListUserByCond"
+	WecomRPC_JudgeTodayIsWorkday_FullMethodName             = "/wrpc.WecomRPC/JudgeTodayIsWorkday"
 )
 
 // WecomRPCClient is the client API for WecomRPC service.
@@ -145,6 +146,7 @@ type WecomRPCClient interface {
 	GetCustomerPointRecord(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	ListCustomerPointRecord(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	ListUserByCond(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	JudgeTodayIsWorkday(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 }
 
 type wecomRPCClient struct {
@@ -665,6 +667,16 @@ func (c *wecomRPCClient) ListUserByCond(ctx context.Context, in *RequestAO, opts
 	return out, nil
 }
 
+func (c *wecomRPCClient) JudgeTodayIsWorkday(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, WecomRPC_JudgeTodayIsWorkday_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WecomRPCServer is the server API for WecomRPC service.
 // All implementations must embed UnimplementedWecomRPCServer
 // for forward compatibility.
@@ -722,6 +734,7 @@ type WecomRPCServer interface {
 	GetCustomerPointRecord(context.Context, *RequestAO) (*ResponseVO, error)
 	ListCustomerPointRecord(context.Context, *RequestAO) (*ResponseVO, error)
 	ListUserByCond(context.Context, *RequestAO) (*ResponseVO, error)
+	JudgeTodayIsWorkday(context.Context, *RequestAO) (*ResponseVO, error)
 	mustEmbedUnimplementedWecomRPCServer()
 }
 
@@ -884,6 +897,9 @@ func (UnimplementedWecomRPCServer) ListCustomerPointRecord(context.Context, *Req
 }
 func (UnimplementedWecomRPCServer) ListUserByCond(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUserByCond not implemented")
+}
+func (UnimplementedWecomRPCServer) JudgeTodayIsWorkday(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method JudgeTodayIsWorkday not implemented")
 }
 func (UnimplementedWecomRPCServer) mustEmbedUnimplementedWecomRPCServer() {}
 func (UnimplementedWecomRPCServer) testEmbeddedByValue()                  {}
@@ -1824,6 +1840,24 @@ func _WecomRPC_ListUserByCond_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WecomRPC_JudgeTodayIsWorkday_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WecomRPCServer).JudgeTodayIsWorkday(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WecomRPC_JudgeTodayIsWorkday_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WecomRPCServer).JudgeTodayIsWorkday(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WecomRPC_ServiceDesc is the grpc.ServiceDesc for WecomRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2034,6 +2068,10 @@ var WecomRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListUserByCond",
 			Handler:    _WecomRPC_ListUserByCond_Handler,
+		},
+		{
+			MethodName: "JudgeTodayIsWorkday",
+			Handler:    _WecomRPC_JudgeTodayIsWorkday_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

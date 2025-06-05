@@ -791,3 +791,12 @@ func InvokeRPCListUserByCond(map1 map[string]interface{}, ctx context.Context) (
 	data := utils.ParseAnyToData(vo.Data)
 	return mapList, data, nil
 }
+
+func InvokeRPCJudgeTodayIsWorkday(ctx context.Context) (bool, error) {
+	vo, err := client.InvokeWecomRPCMethod(ctx, "JudgeTodayIsWorkday", &wecom_rpc.RequestAO{})
+	if err != nil {
+		return false, err
+	}
+	isWorkday := utils.ParseAnyToData(vo.Data).(bool)
+	return isWorkday, nil
+}
