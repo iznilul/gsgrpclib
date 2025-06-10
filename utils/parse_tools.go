@@ -2,7 +2,6 @@ package utils
 
 import (
 	"encoding/json"
-	"strconv"
 
 	"github.com/golang/protobuf/ptypes/any"
 	"github.com/mumushuiding/util"
@@ -45,14 +44,6 @@ func ParseAnyToMapBool(data *any.Any) map[string]bool {
 	return result
 }
 
-func ParseMapBoolToAny(data map[string]bool) (*any.Any, error) {
-	jsonStr, err := util.ToJSONStr(data)
-	if err != nil {
-		return nil, err
-	}
-	return &any.Any{Value: []byte(jsonStr)}, nil
-}
-
 func ParseAnyToMapIntFloatList(data *any.Any) map[int][]float64 {
 	var result map[int][]float64
 	err := json.Unmarshal(data.Value, &result)
@@ -60,14 +51,6 @@ func ParseAnyToMapIntFloatList(data *any.Any) map[int][]float64 {
 		panic(errors.Wrap(err, "解析Any失败"))
 	}
 	return result
-}
-
-func ParseMapIntFloatListToAny(data map[int][]float64) (*any.Any, error) {
-	jsonStr, err := util.ToJSONStr(data)
-	if err != nil {
-		return nil, err
-	}
-	return &any.Any{Value: []byte(jsonStr)}, nil
 }
 
 func ParseAnyToMapInt(data *any.Any) map[int]map[string]interface{} {
