@@ -2,8 +2,10 @@ package invoke
 
 import (
 	"context"
+
 	"github.com/iznilul/gsgrpclib/client"
 	business_rpc "github.com/iznilul/gsgrpclib/proto/business"
+	wecom_rpc "github.com/iznilul/gsgrpclib/proto/wecom"
 	"github.com/iznilul/gsgrpclib/utils"
 )
 
@@ -173,5 +175,14 @@ func InvokeRPCQueryIndicatorDetail(queryAO map[int]map[string]interface{}, ctx c
 		return nil, err
 	}
 	result := utils.ParseAnyToMapIntList(vo.Map)
+	return result, nil
+}
+
+func InvokeRPCSyncOrderProfit(ctx context.Context) (map[int][]float64, error) {
+	vo, err := client.InvokeWecomRPCMethod(ctx, "SyncOrderProfit", &wecom_rpc.RequestAO{})
+	if err != nil {
+		return nil, err
+	}
+	result := utils.ParseAnyToMapIntFloatList(vo.Map)
 	return result, nil
 }

@@ -45,6 +45,7 @@ const (
 	BusinessRPC_UpdateMiniAndAccount_FullMethodName = "/brpc.BusinessRPC/UpdateMiniAndAccount"
 	BusinessRPC_QueryIndicatorCount_FullMethodName  = "/brpc.BusinessRPC/QueryIndicatorCount"
 	BusinessRPC_QueryIndicatorDetail_FullMethodName = "/brpc.BusinessRPC/QueryIndicatorDetail"
+	BusinessRPC_SyncOrderProfit_FullMethodName      = "/brpc.BusinessRPC/SyncOrderProfit"
 )
 
 // BusinessRPCClient is the client API for BusinessRPC service.
@@ -63,6 +64,7 @@ type BusinessRPCClient interface {
 	UpdateMiniAndAccount(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	QueryIndicatorCount(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	QueryIndicatorDetail(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	SyncOrderProfit(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 }
 
 type businessRPCClient struct {
@@ -173,6 +175,16 @@ func (c *businessRPCClient) QueryIndicatorDetail(ctx context.Context, in *Reques
 	return out, nil
 }
 
+func (c *businessRPCClient) SyncOrderProfit(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, BusinessRPC_SyncOrderProfit_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BusinessRPCServer is the server API for BusinessRPC service.
 // All implementations must embed UnimplementedBusinessRPCServer
 // for forward compatibility.
@@ -189,6 +201,7 @@ type BusinessRPCServer interface {
 	UpdateMiniAndAccount(context.Context, *RequestAO) (*ResponseVO, error)
 	QueryIndicatorCount(context.Context, *RequestAO) (*ResponseVO, error)
 	QueryIndicatorDetail(context.Context, *RequestAO) (*ResponseVO, error)
+	SyncOrderProfit(context.Context, *RequestAO) (*ResponseVO, error)
 	mustEmbedUnimplementedBusinessRPCServer()
 }
 
@@ -228,6 +241,9 @@ func (UnimplementedBusinessRPCServer) QueryIndicatorCount(context.Context, *Requ
 }
 func (UnimplementedBusinessRPCServer) QueryIndicatorDetail(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method QueryIndicatorDetail not implemented")
+}
+func (UnimplementedBusinessRPCServer) SyncOrderProfit(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SyncOrderProfit not implemented")
 }
 func (UnimplementedBusinessRPCServer) mustEmbedUnimplementedBusinessRPCServer() {}
 func (UnimplementedBusinessRPCServer) testEmbeddedByValue()                     {}
@@ -430,6 +446,24 @@ func _BusinessRPC_QueryIndicatorDetail_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BusinessRPC_SyncOrderProfit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BusinessRPCServer).SyncOrderProfit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BusinessRPC_SyncOrderProfit_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BusinessRPCServer).SyncOrderProfit(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BusinessRPC_ServiceDesc is the grpc.ServiceDesc for BusinessRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -476,6 +510,10 @@ var BusinessRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "QueryIndicatorDetail",
 			Handler:    _BusinessRPC_QueryIndicatorDetail_Handler,
+		},
+		{
+			MethodName: "SyncOrderProfit",
+			Handler:    _BusinessRPC_SyncOrderProfit_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

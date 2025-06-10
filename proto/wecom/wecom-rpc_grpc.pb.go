@@ -87,6 +87,9 @@ const (
 	WecomRPC_ListCustomerPointRecord_FullMethodName         = "/wrpc.WecomRPC/ListCustomerPointRecord"
 	WecomRPC_ListUserByCond_FullMethodName                  = "/wrpc.WecomRPC/ListUserByCond"
 	WecomRPC_JudgeTodayIsWorkday_FullMethodName             = "/wrpc.WecomRPC/JudgeTodayIsWorkday"
+	WecomRPC_QueryIndicatorCount_FullMethodName             = "/wrpc.WecomRPC/QueryIndicatorCount"
+	WecomRPC_QueryIndicatorDetail_FullMethodName            = "/wrpc.WecomRPC/QueryIndicatorDetail"
+	WecomRPC_QueryHalfDayLeaveMap_FullMethodName            = "/wrpc.WecomRPC/QueryHalfDayLeaveMap"
 )
 
 // WecomRPCClient is the client API for WecomRPC service.
@@ -147,6 +150,9 @@ type WecomRPCClient interface {
 	ListCustomerPointRecord(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	ListUserByCond(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	JudgeTodayIsWorkday(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	QueryIndicatorCount(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	QueryIndicatorDetail(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	QueryHalfDayLeaveMap(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 }
 
 type wecomRPCClient struct {
@@ -677,6 +683,36 @@ func (c *wecomRPCClient) JudgeTodayIsWorkday(ctx context.Context, in *RequestAO,
 	return out, nil
 }
 
+func (c *wecomRPCClient) QueryIndicatorCount(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, WecomRPC_QueryIndicatorCount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *wecomRPCClient) QueryIndicatorDetail(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, WecomRPC_QueryIndicatorDetail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *wecomRPCClient) QueryHalfDayLeaveMap(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, WecomRPC_QueryHalfDayLeaveMap_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WecomRPCServer is the server API for WecomRPC service.
 // All implementations must embed UnimplementedWecomRPCServer
 // for forward compatibility.
@@ -735,6 +771,9 @@ type WecomRPCServer interface {
 	ListCustomerPointRecord(context.Context, *RequestAO) (*ResponseVO, error)
 	ListUserByCond(context.Context, *RequestAO) (*ResponseVO, error)
 	JudgeTodayIsWorkday(context.Context, *RequestAO) (*ResponseVO, error)
+	QueryIndicatorCount(context.Context, *RequestAO) (*ResponseVO, error)
+	QueryIndicatorDetail(context.Context, *RequestAO) (*ResponseVO, error)
+	QueryHalfDayLeaveMap(context.Context, *RequestAO) (*ResponseVO, error)
 	mustEmbedUnimplementedWecomRPCServer()
 }
 
@@ -900,6 +939,15 @@ func (UnimplementedWecomRPCServer) ListUserByCond(context.Context, *RequestAO) (
 }
 func (UnimplementedWecomRPCServer) JudgeTodayIsWorkday(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method JudgeTodayIsWorkday not implemented")
+}
+func (UnimplementedWecomRPCServer) QueryIndicatorCount(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryIndicatorCount not implemented")
+}
+func (UnimplementedWecomRPCServer) QueryIndicatorDetail(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryIndicatorDetail not implemented")
+}
+func (UnimplementedWecomRPCServer) QueryHalfDayLeaveMap(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryHalfDayLeaveMap not implemented")
 }
 func (UnimplementedWecomRPCServer) mustEmbedUnimplementedWecomRPCServer() {}
 func (UnimplementedWecomRPCServer) testEmbeddedByValue()                  {}
@@ -1858,6 +1906,60 @@ func _WecomRPC_JudgeTodayIsWorkday_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WecomRPC_QueryIndicatorCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WecomRPCServer).QueryIndicatorCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WecomRPC_QueryIndicatorCount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WecomRPCServer).QueryIndicatorCount(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WecomRPC_QueryIndicatorDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WecomRPCServer).QueryIndicatorDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WecomRPC_QueryIndicatorDetail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WecomRPCServer).QueryIndicatorDetail(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WecomRPC_QueryHalfDayLeaveMap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WecomRPCServer).QueryHalfDayLeaveMap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WecomRPC_QueryHalfDayLeaveMap_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WecomRPCServer).QueryHalfDayLeaveMap(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WecomRPC_ServiceDesc is the grpc.ServiceDesc for WecomRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2072,6 +2174,18 @@ var WecomRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "JudgeTodayIsWorkday",
 			Handler:    _WecomRPC_JudgeTodayIsWorkday_Handler,
+		},
+		{
+			MethodName: "QueryIndicatorCount",
+			Handler:    _WecomRPC_QueryIndicatorCount_Handler,
+		},
+		{
+			MethodName: "QueryIndicatorDetail",
+			Handler:    _WecomRPC_QueryIndicatorDetail_Handler,
+		},
+		{
+			MethodName: "QueryHalfDayLeaveMap",
+			Handler:    _WecomRPC_QueryHalfDayLeaveMap_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

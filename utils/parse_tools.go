@@ -2,6 +2,8 @@ package utils
 
 import (
 	"encoding/json"
+	"strconv"
+
 	"github.com/golang/protobuf/ptypes/any"
 	"github.com/mumushuiding/util"
 	"github.com/pkg/errors"
@@ -27,6 +29,24 @@ func ParseAnyToDataList(anyDataList []*any.Any) []interface{} {
 
 func ParseAnyToMap(data *any.Any) map[string]interface{} {
 	var result map[string]interface{}
+	err := json.Unmarshal(data.Value, &result)
+	if err != nil {
+		panic(errors.Wrap(err, "解析Any失败"))
+	}
+	return result
+}
+
+func ParseAnyToMapBool(data *any.Any) map[string]bool {
+	var result map[string]bool
+	err := json.Unmarshal(data.Value, &result)
+	if err != nil {
+		panic(errors.Wrap(err, "解析Any失败"))
+	}
+	return result
+}
+
+func ParseAnyToMapIntFloatList(data *any.Any) map[int][]float64 {
+	var result map[int][]float64
 	err := json.Unmarshal(data.Value, &result)
 	if err != nil {
 		panic(errors.Wrap(err, "解析Any失败"))

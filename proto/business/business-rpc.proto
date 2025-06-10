@@ -36,6 +36,7 @@ service BusinessRPC {
   rpc UpdateMiniAndAccount(RequestAO) returns (ResponseVO) {}
   rpc QueryIndicatorCount(RequestAO) returns (ResponseVO) {}
   rpc QueryIndicatorDetail(RequestAO) returns (ResponseVO) {}
+  rpc SyncOrderProfit(RequestAO) returns (ResponseVO) {}
 }
 
 message IdentityLink {
