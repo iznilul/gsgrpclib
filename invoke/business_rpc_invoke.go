@@ -5,7 +5,6 @@ import (
 
 	"github.com/iznilul/gsgrpclib/client"
 	business_rpc "github.com/iznilul/gsgrpclib/proto/business"
-	wecom_rpc "github.com/iznilul/gsgrpclib/proto/wecom"
 	"github.com/iznilul/gsgrpclib/utils"
 )
 
