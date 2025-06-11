@@ -179,7 +179,7 @@ func InvokeRPCQueryIndicatorDetail(queryAO map[int]map[string]interface{}, ctx c
 }
 
 func InvokeRPCSyncOrderProfit(ctx context.Context) (map[int][]float64, error) {
-	vo, err := client.InvokeWecomRPCMethod(ctx, "SyncOrderProfit", &wecom_rpc.RequestAO{})
+	vo, err := client.InvokeBusinessRPCMethod(ctx, "SyncOrderProfit", &business_rpc.RequestAO{})
 	if err != nil {
 		return nil, err
 	}
