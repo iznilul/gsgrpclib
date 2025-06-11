@@ -39,6 +39,8 @@ const (
 	BookingRPC_FindMiniUserList_FullMethodName             = "/borpc.BookingRPC/FindMiniUserList"
 	BookingRPC_FindMiniUserListByOpenIDList_FullMethodName = "/borpc.BookingRPC/FindMiniUserListByOpenIDList"
 	BookingRPC_SendMiniMsg_FullMethodName                  = "/borpc.BookingRPC/SendMiniMsg"
+	BookingRPC_QueryIndicatorCount_FullMethodName          = "/borpc.BookingRPC/QueryIndicatorCount"
+	BookingRPC_QueryIndicatorDetail_FullMethodName         = "/borpc.BookingRPC/QueryIndicatorDetail"
 )
 
 // BookingRPCClient is the client API for BookingRPC service.
@@ -51,6 +53,8 @@ type BookingRPCClient interface {
 	FindMiniUserList(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	FindMiniUserListByOpenIDList(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	SendMiniMsg(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	QueryIndicatorCount(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	QueryIndicatorDetail(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 }
 
 type bookingRPCClient struct {
@@ -101,6 +105,26 @@ func (c *bookingRPCClient) SendMiniMsg(ctx context.Context, in *RequestAO, opts 
 	return out, nil
 }
 
+func (c *bookingRPCClient) QueryIndicatorCount(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, BookingRPC_QueryIndicatorCount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingRPCClient) QueryIndicatorDetail(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, BookingRPC_QueryIndicatorDetail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BookingRPCServer is the server API for BookingRPC service.
 // All implementations must embed UnimplementedBookingRPCServer
 // for forward compatibility.
@@ -111,6 +135,8 @@ type BookingRPCServer interface {
 	FindMiniUserList(context.Context, *RequestAO) (*ResponseVO, error)
 	FindMiniUserListByOpenIDList(context.Context, *RequestAO) (*ResponseVO, error)
 	SendMiniMsg(context.Context, *RequestAO) (*ResponseVO, error)
+	QueryIndicatorCount(context.Context, *RequestAO) (*ResponseVO, error)
+	QueryIndicatorDetail(context.Context, *RequestAO) (*ResponseVO, error)
 	mustEmbedUnimplementedBookingRPCServer()
 }
 
@@ -132,6 +158,12 @@ func (UnimplementedBookingRPCServer) FindMiniUserListByOpenIDList(context.Contex
 }
 func (UnimplementedBookingRPCServer) SendMiniMsg(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendMiniMsg not implemented")
+}
+func (UnimplementedBookingRPCServer) QueryIndicatorCount(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryIndicatorCount not implemented")
+}
+func (UnimplementedBookingRPCServer) QueryIndicatorDetail(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryIndicatorDetail not implemented")
 }
 func (UnimplementedBookingRPCServer) mustEmbedUnimplementedBookingRPCServer() {}
 func (UnimplementedBookingRPCServer) testEmbeddedByValue()                    {}
@@ -226,6 +258,42 @@ func _BookingRPC_SendMiniMsg_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BookingRPC_QueryIndicatorCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingRPCServer).QueryIndicatorCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BookingRPC_QueryIndicatorCount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingRPCServer).QueryIndicatorCount(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BookingRPC_QueryIndicatorDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingRPCServer).QueryIndicatorDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BookingRPC_QueryIndicatorDetail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingRPCServer).QueryIndicatorDetail(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BookingRPC_ServiceDesc is the grpc.ServiceDesc for BookingRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -248,6 +316,14 @@ var BookingRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendMiniMsg",
 			Handler:    _BookingRPC_SendMiniMsg_Handler,
+		},
+		{
+			MethodName: "QueryIndicatorCount",
+			Handler:    _BookingRPC_QueryIndicatorCount_Handler,
+		},
+		{
+			MethodName: "QueryIndicatorDetail",
+			Handler:    _BookingRPC_QueryIndicatorDetail_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

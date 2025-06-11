@@ -67,3 +67,35 @@ func InvokeRpcBookingSendMiniMsg(toMap map[string]interface{}, ctx context.Conte
 	}
 	return nil
 }
+
+func InvokeBookingRPCQueryIndicatorCount(queryAO map[int]map[string]interface{}, ctx context.Context) (map[int]map[string]interface{}, error) {
+	toAny, err := utils.ParseMapIntToAny(queryAO)
+	if err != nil {
+		return nil, err
+	}
+	ao := &booking_rpc.RequestAO{
+		Map: toAny,
+	}
+	vo, err := client.InvokeBookingRPCMethod(ctx, "QueryIndicatorCount", ao)
+	if err != nil {
+		return nil, err
+	}
+	result := utils.ParseAnyToMapInt(vo.Map)
+	return result, nil
+}
+
+func InvokeBookingRPCQueryIndicatorDetail(queryAO map[int]map[string]interface{}, ctx context.Context) (map[int][]map[string]interface{}, error) {
+	toAny, err := utils.ParseMapIntToAny(queryAO)
+	if err != nil {
+		return nil, err
+	}
+	ao := &booking_rpc.RequestAO{
+		Map: toAny,
+	}
+	vo, err := client.InvokeBookingRPCMethod(ctx, "QueryIndicatorDetail", ao)
+	if err != nil {
+		return nil, err
+	}
+	result := utils.ParseAnyToMapIntList(vo.Map)
+	return result, nil
+}

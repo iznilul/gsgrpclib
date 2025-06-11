@@ -30,6 +30,8 @@ service BookingRPC {
   rpc FindMiniUserList(RequestAO) returns (ResponseVO) {}
   rpc FindMiniUserListByOpenIDList(RequestAO) returns (ResponseVO) {}
   rpc SendMiniMsg(RequestAO) returns (ResponseVO) {}
+  rpc QueryIndicatorCount(RequestAO) returns (ResponseVO) {}
+  rpc QueryIndicatorDetail(RequestAO) returns (ResponseVO) {}
 }
 
 message ResponseVO {
