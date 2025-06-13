@@ -35,6 +35,15 @@ func ParseAnyToMap(data *any.Any) map[string]interface{} {
 	return result
 }
 
+func ParseAnyToMapStringMap(data *any.Any) map[string]map[string]interface{} {
+	var result map[string]map[string]interface{}
+	err := json.Unmarshal(data.Value, &result)
+	if err != nil {
+		panic(errors.Wrap(err, "解析Any失败"))
+	}
+	return result
+}
+
 func ParseAnyToMapBool(data *any.Any) map[string]bool {
 	var result map[string]bool
 	err := json.Unmarshal(data.Value, &result)

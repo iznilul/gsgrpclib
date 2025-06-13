@@ -81,6 +81,7 @@ service WecomRPC {
   rpc QueryIndicatorCount(RequestAO) returns (ResponseVO) {}
   rpc QueryIndicatorDetail(RequestAO) returns (ResponseVO) {}
   rpc QueryHalfDayLeaveMap(RequestAO) returns (ResponseVO) {}
+  rpc QueryCheckInMonth(RequestAO) returns (ResponseVO) {}
 }
 
 message MessageAO {
