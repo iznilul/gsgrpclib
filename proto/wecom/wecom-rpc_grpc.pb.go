@@ -91,6 +91,7 @@ const (
 	WecomRPC_QueryIndicatorDetail_FullMethodName            = "/wrpc.WecomRPC/QueryIndicatorDetail"
 	WecomRPC_QueryHalfDayLeaveMap_FullMethodName            = "/wrpc.WecomRPC/QueryHalfDayLeaveMap"
 	WecomRPC_QueryCheckInMonth_FullMethodName               = "/wrpc.WecomRPC/QueryCheckInMonth"
+	WecomRPC_CalculateUserIndicator_FullMethodName          = "/wrpc.WecomRPC/CalculateUserIndicator"
 )
 
 // WecomRPCClient is the client API for WecomRPC service.
@@ -155,6 +156,7 @@ type WecomRPCClient interface {
 	QueryIndicatorDetail(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	QueryHalfDayLeaveMap(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	QueryCheckInMonth(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	CalculateUserIndicator(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 }
 
 type wecomRPCClient struct {
@@ -725,6 +727,16 @@ func (c *wecomRPCClient) QueryCheckInMonth(ctx context.Context, in *RequestAO, o
 	return out, nil
 }
 
+func (c *wecomRPCClient) CalculateUserIndicator(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, WecomRPC_CalculateUserIndicator_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WecomRPCServer is the server API for WecomRPC service.
 // All implementations must embed UnimplementedWecomRPCServer
 // for forward compatibility.
@@ -787,6 +799,7 @@ type WecomRPCServer interface {
 	QueryIndicatorDetail(context.Context, *RequestAO) (*ResponseVO, error)
 	QueryHalfDayLeaveMap(context.Context, *RequestAO) (*ResponseVO, error)
 	QueryCheckInMonth(context.Context, *RequestAO) (*ResponseVO, error)
+	CalculateUserIndicator(context.Context, *RequestAO) (*ResponseVO, error)
 	mustEmbedUnimplementedWecomRPCServer()
 }
 
@@ -964,6 +977,9 @@ func (UnimplementedWecomRPCServer) QueryHalfDayLeaveMap(context.Context, *Reques
 }
 func (UnimplementedWecomRPCServer) QueryCheckInMonth(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method QueryCheckInMonth not implemented")
+}
+func (UnimplementedWecomRPCServer) CalculateUserIndicator(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CalculateUserIndicator not implemented")
 }
 func (UnimplementedWecomRPCServer) mustEmbedUnimplementedWecomRPCServer() {}
 func (UnimplementedWecomRPCServer) testEmbeddedByValue()                  {}
@@ -1994,6 +2010,24 @@ func _WecomRPC_QueryCheckInMonth_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WecomRPC_CalculateUserIndicator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WecomRPCServer).CalculateUserIndicator(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WecomRPC_CalculateUserIndicator_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WecomRPCServer).CalculateUserIndicator(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WecomRPC_ServiceDesc is the grpc.ServiceDesc for WecomRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2224,6 +2258,10 @@ var WecomRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "QueryCheckInMonth",
 			Handler:    _WecomRPC_QueryCheckInMonth_Handler,
+		},
+		{
+			MethodName: "CalculateUserIndicator",
+			Handler:    _WecomRPC_CalculateUserIndicator_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

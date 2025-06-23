@@ -834,6 +834,22 @@ func InvokeWecomRPCQueryIndicatorDetail(queryAO map[int]map[string]interface{}, 
 	return result, nil
 }
 
+func InvokeWecomRPCCalculateUserIndicator(queryAO map[string]map[string]interface{}, ctx context.Context) (map[string]map[string]interface{}, error) {
+	toAny, err := utils.ParseDataToAny(queryAO)
+	if err != nil {
+		return nil, err
+	}
+	ao := &wecom_rpc.RequestAO{
+		Map: toAny,
+	}
+	vo, err := client.InvokeWecomRPCMethod(ctx, "CalculateUserIndicator", ao)
+	if err != nil {
+		return nil, err
+	}
+	result := utils.ParseAnyToMapStringMap(vo.Map)
+	return result, nil
+}
+
 func InvokeRPCQueryHalfDayLeaveMap(ctx context.Context) (map[string]bool, error) {
 	vo, err := client.InvokeWecomRPCMethod(ctx, "QueryHalfDayLeaveMap", &wecom_rpc.RequestAO{})
 	if err != nil {
