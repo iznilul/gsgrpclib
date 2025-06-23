@@ -185,3 +185,19 @@ func InvokeRPCSyncOrderProfit(ctx context.Context) (map[int][]float64, error) {
 	result := utils.ParseAnyToMapIntFloatList(vo.Map)
 	return result, nil
 }
+
+func InvokeBusinessRPCCalculateUserIndicator(queryAO map[string]map[string]interface{}, ctx context.Context) (map[string]map[string]interface{}, error) {
+	toAny, err := utils.ParseDataToAny(queryAO)
+	if err != nil {
+		return nil, err
+	}
+	ao := &business_rpc.RequestAO{
+		Map: toAny,
+	}
+	vo, err := client.InvokeBusinessRPCMethod(ctx, "CalculateUserIndicator", ao)
+	if err != nil {
+		return nil, err
+	}
+	result := utils.ParseAnyToMapStringMap(vo.Map)
+	return result, nil
+}

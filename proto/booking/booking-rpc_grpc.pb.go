@@ -41,6 +41,7 @@ const (
 	BookingRPC_SendMiniMsg_FullMethodName                  = "/borpc.BookingRPC/SendMiniMsg"
 	BookingRPC_QueryIndicatorCount_FullMethodName          = "/borpc.BookingRPC/QueryIndicatorCount"
 	BookingRPC_QueryIndicatorDetail_FullMethodName         = "/borpc.BookingRPC/QueryIndicatorDetail"
+	BookingRPC_CalculateUserIndicator_FullMethodName       = "/borpc.BookingRPC/CalculateUserIndicator"
 )
 
 // BookingRPCClient is the client API for BookingRPC service.
@@ -55,6 +56,7 @@ type BookingRPCClient interface {
 	SendMiniMsg(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	QueryIndicatorCount(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	QueryIndicatorDetail(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	CalculateUserIndicator(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 }
 
 type bookingRPCClient struct {
@@ -125,6 +127,16 @@ func (c *bookingRPCClient) QueryIndicatorDetail(ctx context.Context, in *Request
 	return out, nil
 }
 
+func (c *bookingRPCClient) CalculateUserIndicator(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, BookingRPC_CalculateUserIndicator_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BookingRPCServer is the server API for BookingRPC service.
 // All implementations must embed UnimplementedBookingRPCServer
 // for forward compatibility.
@@ -137,6 +149,7 @@ type BookingRPCServer interface {
 	SendMiniMsg(context.Context, *RequestAO) (*ResponseVO, error)
 	QueryIndicatorCount(context.Context, *RequestAO) (*ResponseVO, error)
 	QueryIndicatorDetail(context.Context, *RequestAO) (*ResponseVO, error)
+	CalculateUserIndicator(context.Context, *RequestAO) (*ResponseVO, error)
 	mustEmbedUnimplementedBookingRPCServer()
 }
 
@@ -164,6 +177,9 @@ func (UnimplementedBookingRPCServer) QueryIndicatorCount(context.Context, *Reque
 }
 func (UnimplementedBookingRPCServer) QueryIndicatorDetail(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method QueryIndicatorDetail not implemented")
+}
+func (UnimplementedBookingRPCServer) CalculateUserIndicator(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CalculateUserIndicator not implemented")
 }
 func (UnimplementedBookingRPCServer) mustEmbedUnimplementedBookingRPCServer() {}
 func (UnimplementedBookingRPCServer) testEmbeddedByValue()                    {}
@@ -294,6 +310,24 @@ func _BookingRPC_QueryIndicatorDetail_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BookingRPC_CalculateUserIndicator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingRPCServer).CalculateUserIndicator(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BookingRPC_CalculateUserIndicator_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingRPCServer).CalculateUserIndicator(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BookingRPC_ServiceDesc is the grpc.ServiceDesc for BookingRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -324,6 +358,10 @@ var BookingRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "QueryIndicatorDetail",
 			Handler:    _BookingRPC_QueryIndicatorDetail_Handler,
+		},
+		{
+			MethodName: "CalculateUserIndicator",
+			Handler:    _BookingRPC_CalculateUserIndicator_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

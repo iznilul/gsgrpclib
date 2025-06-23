@@ -2,6 +2,7 @@ package invoke
 
 import (
 	"context"
+
 	"github.com/iznilul/gsgrpclib/client"
 	booking_rpc "github.com/iznilul/gsgrpclib/proto/booking"
 	"github.com/iznilul/gsgrpclib/utils"
@@ -97,5 +98,21 @@ func InvokeBookingRPCQueryIndicatorDetail(queryAO map[int]map[string]interface{}
 		return nil, err
 	}
 	result := utils.ParseAnyToMapIntList(vo.Map)
+	return result, nil
+}
+
+func InvokeBookingRPCCalculateUserIndicator(queryAO map[string]map[string]interface{}, ctx context.Context) (map[string]map[string]interface{}, error) {
+	toAny, err := utils.ParseDataToAny(queryAO)
+	if err != nil {
+		return nil, err
+	}
+	ao := &booking_rpc.RequestAO{
+		Map: toAny,
+	}
+	vo, err := client.InvokeBookingRPCMethod(ctx, "CalculateUserIndicator", ao)
+	if err != nil {
+		return nil, err
+	}
+	result := utils.ParseAnyToMapStringMap(vo.Map)
 	return result, nil
 }

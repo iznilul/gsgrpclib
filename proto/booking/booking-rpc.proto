@@ -32,6 +32,7 @@ service BookingRPC {
   rpc SendMiniMsg(RequestAO) returns (ResponseVO) {}
   rpc QueryIndicatorCount(RequestAO) returns (ResponseVO) {}
   rpc QueryIndicatorDetail(RequestAO) returns (ResponseVO) {}
+  rpc CalculateUserIndicator(RequestAO) returns (ResponseVO) {}
 }
 
 message ResponseVO {
