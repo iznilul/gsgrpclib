@@ -42,6 +42,7 @@ const (
 	BookingRPC_QueryIndicatorCount_FullMethodName          = "/borpc.BookingRPC/QueryIndicatorCount"
 	BookingRPC_QueryIndicatorDetail_FullMethodName         = "/borpc.BookingRPC/QueryIndicatorDetail"
 	BookingRPC_CalculateUserIndicator_FullMethodName       = "/borpc.BookingRPC/CalculateUserIndicator"
+	BookingRPC_GetGiftList_FullMethodName                  = "/borpc.BookingRPC/GetGiftList"
 )
 
 // BookingRPCClient is the client API for BookingRPC service.
@@ -57,6 +58,7 @@ type BookingRPCClient interface {
 	QueryIndicatorCount(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	QueryIndicatorDetail(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	CalculateUserIndicator(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	GetGiftList(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 }
 
 type bookingRPCClient struct {
@@ -137,6 +139,16 @@ func (c *bookingRPCClient) CalculateUserIndicator(ctx context.Context, in *Reque
 	return out, nil
 }
 
+func (c *bookingRPCClient) GetGiftList(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, BookingRPC_GetGiftList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BookingRPCServer is the server API for BookingRPC service.
 // All implementations must embed UnimplementedBookingRPCServer
 // for forward compatibility.
@@ -150,6 +162,7 @@ type BookingRPCServer interface {
 	QueryIndicatorCount(context.Context, *RequestAO) (*ResponseVO, error)
 	QueryIndicatorDetail(context.Context, *RequestAO) (*ResponseVO, error)
 	CalculateUserIndicator(context.Context, *RequestAO) (*ResponseVO, error)
+	GetGiftList(context.Context, *RequestAO) (*ResponseVO, error)
 	mustEmbedUnimplementedBookingRPCServer()
 }
 
@@ -180,6 +193,9 @@ func (UnimplementedBookingRPCServer) QueryIndicatorDetail(context.Context, *Requ
 }
 func (UnimplementedBookingRPCServer) CalculateUserIndicator(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CalculateUserIndicator not implemented")
+}
+func (UnimplementedBookingRPCServer) GetGiftList(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGiftList not implemented")
 }
 func (UnimplementedBookingRPCServer) mustEmbedUnimplementedBookingRPCServer() {}
 func (UnimplementedBookingRPCServer) testEmbeddedByValue()                    {}
@@ -328,6 +344,24 @@ func _BookingRPC_CalculateUserIndicator_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BookingRPC_GetGiftList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingRPCServer).GetGiftList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BookingRPC_GetGiftList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingRPCServer).GetGiftList(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BookingRPC_ServiceDesc is the grpc.ServiceDesc for BookingRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -362,6 +396,10 @@ var BookingRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CalculateUserIndicator",
 			Handler:    _BookingRPC_CalculateUserIndicator_Handler,
+		},
+		{
+			MethodName: "GetGiftList",
+			Handler:    _BookingRPC_GetGiftList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

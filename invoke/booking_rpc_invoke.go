@@ -116,3 +116,16 @@ func InvokeBookingRPCCalculateUserIndicator(queryAO map[string]map[string]interf
 	result := utils.ParseAnyToMapStringMap(vo.Map)
 	return result, nil
 }
+
+func InvokeRPCGetGiftList(index string, ctx context.Context) ([]map[string]interface{}, error) {
+	toAny, _ := utils.ParseDataToAny(index)
+	ao := &booking_rpc.RequestAO{
+		Data: toAny,
+	}
+	vo, err := client.InvokeBookingRPCMethod(ctx, "GetGiftList", ao)
+	if err != nil {
+		return nil, err
+	}
+	mapList := utils.ParseAnyToMapList(vo.MapList)
+	return mapList, nil
+}
