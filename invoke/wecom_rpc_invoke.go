@@ -874,3 +874,18 @@ func InvokeRPCQueryCheckInMonth(queryAO map[string]interface{}, ctx context.Cont
 	result := utils.ParseAnyToMapStringMap(vo.Map)
 	return result, nil
 }
+
+func InvokeRPCGenerateReportRecord(queryAO map[string]interface{}, ctx context.Context) error {
+	toAny, err := utils.ParseMapToAny(queryAO)
+	if err != nil {
+		return err
+	}
+	ao := &wecom_rpc.RequestAO{
+		Map: toAny,
+	}
+	_, err = client.InvokeWecomRPCMethod(ctx, "GenerateReportRecord", ao)
+	if err != nil {
+		return err
+	}
+	return nil
+}
