@@ -92,7 +92,7 @@ const (
 	WecomRPC_QueryHalfDayLeaveMap_FullMethodName            = "/wrpc.WecomRPC/QueryHalfDayLeaveMap"
 	WecomRPC_QueryCheckInMonth_FullMethodName               = "/wrpc.WecomRPC/QueryCheckInMonth"
 	WecomRPC_CalculateUserIndicator_FullMethodName          = "/wrpc.WecomRPC/CalculateUserIndicator"
-	WecomRPC_GenereateReportRecord_FullMethodName           = "/wrpc.WecomRPC/GenereateReportRecord"
+	WecomRPC_GenerateReportRecord_FullMethodName            = "/wrpc.WecomRPC/GenerateReportRecord"
 )
 
 // WecomRPCClient is the client API for WecomRPC service.
@@ -158,7 +158,7 @@ type WecomRPCClient interface {
 	QueryHalfDayLeaveMap(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	QueryCheckInMonth(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	CalculateUserIndicator(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
-	GenereateReportRecord(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	GenerateReportRecord(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 }
 
 type wecomRPCClient struct {
@@ -739,10 +739,10 @@ func (c *wecomRPCClient) CalculateUserIndicator(ctx context.Context, in *Request
 	return out, nil
 }
 
-func (c *wecomRPCClient) GenereateReportRecord(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+func (c *wecomRPCClient) GenerateReportRecord(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ResponseVO)
-	err := c.cc.Invoke(ctx, WecomRPC_GenereateReportRecord_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, WecomRPC_GenerateReportRecord_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -812,7 +812,7 @@ type WecomRPCServer interface {
 	QueryHalfDayLeaveMap(context.Context, *RequestAO) (*ResponseVO, error)
 	QueryCheckInMonth(context.Context, *RequestAO) (*ResponseVO, error)
 	CalculateUserIndicator(context.Context, *RequestAO) (*ResponseVO, error)
-	GenereateReportRecord(context.Context, *RequestAO) (*ResponseVO, error)
+	GenerateReportRecord(context.Context, *RequestAO) (*ResponseVO, error)
 	mustEmbedUnimplementedWecomRPCServer()
 }
 
@@ -994,8 +994,8 @@ func (UnimplementedWecomRPCServer) QueryCheckInMonth(context.Context, *RequestAO
 func (UnimplementedWecomRPCServer) CalculateUserIndicator(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CalculateUserIndicator not implemented")
 }
-func (UnimplementedWecomRPCServer) GenereateReportRecord(context.Context, *RequestAO) (*ResponseVO, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GenereateReportRecord not implemented")
+func (UnimplementedWecomRPCServer) GenerateReportRecord(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateReportRecord not implemented")
 }
 func (UnimplementedWecomRPCServer) mustEmbedUnimplementedWecomRPCServer() {}
 func (UnimplementedWecomRPCServer) testEmbeddedByValue()                  {}
@@ -2044,20 +2044,20 @@ func _WecomRPC_CalculateUserIndicator_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _WecomRPC_GenereateReportRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _WecomRPC_GenerateReportRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RequestAO)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(WecomRPCServer).GenereateReportRecord(ctx, in)
+		return srv.(WecomRPCServer).GenerateReportRecord(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: WecomRPC_GenereateReportRecord_FullMethodName,
+		FullMethod: WecomRPC_GenerateReportRecord_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WecomRPCServer).GenereateReportRecord(ctx, req.(*RequestAO))
+		return srv.(WecomRPCServer).GenerateReportRecord(ctx, req.(*RequestAO))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2298,8 +2298,8 @@ var WecomRPC_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _WecomRPC_CalculateUserIndicator_Handler,
 		},
 		{
-			MethodName: "GenereateReportRecord",
-			Handler:    _WecomRPC_GenereateReportRecord_Handler,
+			MethodName: "GenerateReportRecord",
+			Handler:    _WecomRPC_GenerateReportRecord_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
