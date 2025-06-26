@@ -84,6 +84,8 @@ service WecomRPC {
   rpc QueryCheckInMonth(RequestAO) returns (ResponseVO) {}
   rpc CalculateUserIndicator(RequestAO) returns (ResponseVO) {}
   rpc GenerateReportRecord(RequestAO) returns (ResponseVO) {}
+  rpc SyncAcademy(RequestAO) returns (ResponseVO) {}
+  rpc SyncTraining(RequestAO) returns (ResponseVO) {}
 }
 
 message MessageAO {

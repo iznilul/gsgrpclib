@@ -93,6 +93,8 @@ const (
 	WecomRPC_QueryCheckInMonth_FullMethodName               = "/wrpc.WecomRPC/QueryCheckInMonth"
 	WecomRPC_CalculateUserIndicator_FullMethodName          = "/wrpc.WecomRPC/CalculateUserIndicator"
 	WecomRPC_GenerateReportRecord_FullMethodName            = "/wrpc.WecomRPC/GenerateReportRecord"
+	WecomRPC_SyncAcademy_FullMethodName                     = "/wrpc.WecomRPC/SyncAcademy"
+	WecomRPC_SyncTraining_FullMethodName                    = "/wrpc.WecomRPC/SyncTraining"
 )
 
 // WecomRPCClient is the client API for WecomRPC service.
@@ -159,6 +161,8 @@ type WecomRPCClient interface {
 	QueryCheckInMonth(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	CalculateUserIndicator(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	GenerateReportRecord(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	SyncAcademy(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	SyncTraining(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 }
 
 type wecomRPCClient struct {
@@ -749,6 +753,26 @@ func (c *wecomRPCClient) GenerateReportRecord(ctx context.Context, in *RequestAO
 	return out, nil
 }
 
+func (c *wecomRPCClient) SyncAcademy(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, WecomRPC_SyncAcademy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *wecomRPCClient) SyncTraining(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, WecomRPC_SyncTraining_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WecomRPCServer is the server API for WecomRPC service.
 // All implementations must embed UnimplementedWecomRPCServer
 // for forward compatibility.
@@ -813,6 +837,8 @@ type WecomRPCServer interface {
 	QueryCheckInMonth(context.Context, *RequestAO) (*ResponseVO, error)
 	CalculateUserIndicator(context.Context, *RequestAO) (*ResponseVO, error)
 	GenerateReportRecord(context.Context, *RequestAO) (*ResponseVO, error)
+	SyncAcademy(context.Context, *RequestAO) (*ResponseVO, error)
+	SyncTraining(context.Context, *RequestAO) (*ResponseVO, error)
 	mustEmbedUnimplementedWecomRPCServer()
 }
 
@@ -996,6 +1022,12 @@ func (UnimplementedWecomRPCServer) CalculateUserIndicator(context.Context, *Requ
 }
 func (UnimplementedWecomRPCServer) GenerateReportRecord(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateReportRecord not implemented")
+}
+func (UnimplementedWecomRPCServer) SyncAcademy(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SyncAcademy not implemented")
+}
+func (UnimplementedWecomRPCServer) SyncTraining(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SyncTraining not implemented")
 }
 func (UnimplementedWecomRPCServer) mustEmbedUnimplementedWecomRPCServer() {}
 func (UnimplementedWecomRPCServer) testEmbeddedByValue()                  {}
@@ -2062,6 +2094,42 @@ func _WecomRPC_GenerateReportRecord_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WecomRPC_SyncAcademy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WecomRPCServer).SyncAcademy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WecomRPC_SyncAcademy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WecomRPCServer).SyncAcademy(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WecomRPC_SyncTraining_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WecomRPCServer).SyncTraining(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WecomRPC_SyncTraining_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WecomRPCServer).SyncTraining(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WecomRPC_ServiceDesc is the grpc.ServiceDesc for WecomRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2300,6 +2368,14 @@ var WecomRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GenerateReportRecord",
 			Handler:    _WecomRPC_GenerateReportRecord_Handler,
+		},
+		{
+			MethodName: "SyncAcademy",
+			Handler:    _WecomRPC_SyncAcademy_Handler,
+		},
+		{
+			MethodName: "SyncTraining",
+			Handler:    _WecomRPC_SyncTraining_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
