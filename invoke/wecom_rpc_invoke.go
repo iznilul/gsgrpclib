@@ -802,8 +802,8 @@ func InvokeRPCJudgeTodayIsWorkday(ctx context.Context) (bool, error) {
 	return isWorkday, nil
 }
 
-func InvokeWecomRPCQueryIndicatorCount(queryAO map[int][]map[string]interface{}, ctx context.Context) (map[int][]map[string]interface{}, error) {
-	toAny, err := utils.ParseDataToAny(queryAO)
+func InvokeWecomRPCQueryIndicatorCount(queryAO map[int]map[string]interface{}, ctx context.Context) (map[int]map[string]interface{}, error) {
+	toAny, err := utils.ParseMapIntToAny(queryAO)
 	if err != nil {
 		return nil, err
 	}
@@ -814,7 +814,7 @@ func InvokeWecomRPCQueryIndicatorCount(queryAO map[int][]map[string]interface{},
 	if err != nil {
 		return nil, err
 	}
-	result := utils.ParseAnyToMapIntList(vo.Map)
+	result := utils.ParseAnyToMapInt(vo.Map)
 	return result, nil
 }
 
@@ -920,4 +920,20 @@ func InvokeRpcSyncTraining(mapList []map[string]interface{}, ctx context.Context
 		return err
 	}
 	return nil
+}
+
+func InvokeWecomRPCQueryIndicatorCountInBatch(queryAO map[int][]map[string]interface{}, ctx context.Context) (map[int][]map[string]interface{}, error) {
+	toAny, err := utils.ParseDataToAny(queryAO)
+	if err != nil {
+		return nil, err
+	}
+	ao := &wecom_rpc.RequestAO{
+		Map: toAny,
+	}
+	vo, err := client.InvokeWecomRPCMethod(ctx, "QueryIndicatorCountInBatch", ao)
+	if err != nil {
+		return nil, err
+	}
+	result := utils.ParseAnyToMapIntList(vo.Map)
+	return result, nil
 }

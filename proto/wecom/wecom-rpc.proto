@@ -86,6 +86,7 @@ service WecomRPC {
   rpc GenerateReportRecord(RequestAO) returns (ResponseVO) {}
   rpc SyncAcademy(RequestAO) returns (ResponseVO) {}
   rpc SyncTraining(RequestAO) returns (ResponseVO) {}
+  rpc QueryIndicatorCountInBatch(RequestAO) returns (ResponseVO) {}
 }
 
 message MessageAO {
