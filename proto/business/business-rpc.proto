@@ -38,6 +38,7 @@ service BusinessRPC {
   rpc QueryIndicatorDetail(RequestAO) returns (ResponseVO) {}
   rpc SyncOrderProfit(RequestAO) returns (ResponseVO) {}
   rpc CalculateUserIndicator(RequestAO) returns (ResponseVO) {}
+  rpc QueryIndicatorCountInBatch(RequestAO) returns (ResponseVO) {}
 }
 
 message IdentityLink {

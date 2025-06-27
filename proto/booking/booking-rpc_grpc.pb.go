@@ -43,6 +43,7 @@ const (
 	BookingRPC_QueryIndicatorDetail_FullMethodName         = "/borpc.BookingRPC/QueryIndicatorDetail"
 	BookingRPC_CalculateUserIndicator_FullMethodName       = "/borpc.BookingRPC/CalculateUserIndicator"
 	BookingRPC_GetGiftList_FullMethodName                  = "/borpc.BookingRPC/GetGiftList"
+	BookingRPC_QueryIndicatorCountInBatch_FullMethodName   = "/borpc.BookingRPC/QueryIndicatorCountInBatch"
 )
 
 // BookingRPCClient is the client API for BookingRPC service.
@@ -59,6 +60,7 @@ type BookingRPCClient interface {
 	QueryIndicatorDetail(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	CalculateUserIndicator(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	GetGiftList(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	QueryIndicatorCountInBatch(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 }
 
 type bookingRPCClient struct {
@@ -149,6 +151,16 @@ func (c *bookingRPCClient) GetGiftList(ctx context.Context, in *RequestAO, opts 
 	return out, nil
 }
 
+func (c *bookingRPCClient) QueryIndicatorCountInBatch(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, BookingRPC_QueryIndicatorCountInBatch_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BookingRPCServer is the server API for BookingRPC service.
 // All implementations must embed UnimplementedBookingRPCServer
 // for forward compatibility.
@@ -163,6 +175,7 @@ type BookingRPCServer interface {
 	QueryIndicatorDetail(context.Context, *RequestAO) (*ResponseVO, error)
 	CalculateUserIndicator(context.Context, *RequestAO) (*ResponseVO, error)
 	GetGiftList(context.Context, *RequestAO) (*ResponseVO, error)
+	QueryIndicatorCountInBatch(context.Context, *RequestAO) (*ResponseVO, error)
 	mustEmbedUnimplementedBookingRPCServer()
 }
 
@@ -196,6 +209,9 @@ func (UnimplementedBookingRPCServer) CalculateUserIndicator(context.Context, *Re
 }
 func (UnimplementedBookingRPCServer) GetGiftList(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetGiftList not implemented")
+}
+func (UnimplementedBookingRPCServer) QueryIndicatorCountInBatch(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryIndicatorCountInBatch not implemented")
 }
 func (UnimplementedBookingRPCServer) mustEmbedUnimplementedBookingRPCServer() {}
 func (UnimplementedBookingRPCServer) testEmbeddedByValue()                    {}
@@ -362,6 +378,24 @@ func _BookingRPC_GetGiftList_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BookingRPC_QueryIndicatorCountInBatch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingRPCServer).QueryIndicatorCountInBatch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BookingRPC_QueryIndicatorCountInBatch_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingRPCServer).QueryIndicatorCountInBatch(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BookingRPC_ServiceDesc is the grpc.ServiceDesc for BookingRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -400,6 +434,10 @@ var BookingRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetGiftList",
 			Handler:    _BookingRPC_GetGiftList_Handler,
+		},
+		{
+			MethodName: "QueryIndicatorCountInBatch",
+			Handler:    _BookingRPC_QueryIndicatorCountInBatch_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

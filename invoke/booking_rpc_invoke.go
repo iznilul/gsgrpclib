@@ -129,3 +129,19 @@ func InvokeRPCGetGiftList(index string, ctx context.Context) ([]map[string]inter
 	mapList := utils.ParseAnyToMapList(vo.MapList)
 	return mapList, nil
 }
+
+func InvokeBookingRPCQueryIndicatorCountInBatch(queryAO map[int][]map[string]interface{}, ctx context.Context) (map[int][]map[string]interface{}, error) {
+	toAny, err := utils.ParseDataToAny(queryAO)
+	if err != nil {
+		return nil, err
+	}
+	ao := &booking_rpc.RequestAO{
+		Map: toAny,
+	}
+	vo, err := client.InvokeBookingRPCMethod(ctx, "QueryIndicatorCountInBatch", ao)
+	if err != nil {
+		return nil, err
+	}
+	result := utils.ParseAnyToMapIntList(vo.Map)
+	return result, nil
+}
