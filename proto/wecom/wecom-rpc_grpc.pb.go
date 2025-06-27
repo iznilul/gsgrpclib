@@ -95,6 +95,7 @@ const (
 	WecomRPC_GenerateReportRecord_FullMethodName            = "/wrpc.WecomRPC/GenerateReportRecord"
 	WecomRPC_SyncAcademy_FullMethodName                     = "/wrpc.WecomRPC/SyncAcademy"
 	WecomRPC_SyncTraining_FullMethodName                    = "/wrpc.WecomRPC/SyncTraining"
+	WecomRPC_SyncKnowledgeBase_FullMethodName               = "/wrpc.WecomRPC/SyncKnowledgeBase"
 	WecomRPC_QueryIndicatorCountInBatch_FullMethodName      = "/wrpc.WecomRPC/QueryIndicatorCountInBatch"
 )
 
@@ -164,6 +165,7 @@ type WecomRPCClient interface {
 	GenerateReportRecord(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	SyncAcademy(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	SyncTraining(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	SyncKnowledgeBase(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	QueryIndicatorCountInBatch(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 }
 
@@ -775,6 +777,16 @@ func (c *wecomRPCClient) SyncTraining(ctx context.Context, in *RequestAO, opts .
 	return out, nil
 }
 
+func (c *wecomRPCClient) SyncKnowledgeBase(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, WecomRPC_SyncKnowledgeBase_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *wecomRPCClient) QueryIndicatorCountInBatch(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ResponseVO)
@@ -851,6 +863,7 @@ type WecomRPCServer interface {
 	GenerateReportRecord(context.Context, *RequestAO) (*ResponseVO, error)
 	SyncAcademy(context.Context, *RequestAO) (*ResponseVO, error)
 	SyncTraining(context.Context, *RequestAO) (*ResponseVO, error)
+	SyncKnowledgeBase(context.Context, *RequestAO) (*ResponseVO, error)
 	QueryIndicatorCountInBatch(context.Context, *RequestAO) (*ResponseVO, error)
 	mustEmbedUnimplementedWecomRPCServer()
 }
@@ -1041,6 +1054,9 @@ func (UnimplementedWecomRPCServer) SyncAcademy(context.Context, *RequestAO) (*Re
 }
 func (UnimplementedWecomRPCServer) SyncTraining(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SyncTraining not implemented")
+}
+func (UnimplementedWecomRPCServer) SyncKnowledgeBase(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SyncKnowledgeBase not implemented")
 }
 func (UnimplementedWecomRPCServer) QueryIndicatorCountInBatch(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method QueryIndicatorCountInBatch not implemented")
@@ -2146,6 +2162,24 @@ func _WecomRPC_SyncTraining_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WecomRPC_SyncKnowledgeBase_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WecomRPCServer).SyncKnowledgeBase(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WecomRPC_SyncKnowledgeBase_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WecomRPCServer).SyncKnowledgeBase(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _WecomRPC_QueryIndicatorCountInBatch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RequestAO)
 	if err := dec(in); err != nil {
@@ -2410,6 +2444,10 @@ var WecomRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SyncTraining",
 			Handler:    _WecomRPC_SyncTraining_Handler,
+		},
+		{
+			MethodName: "SyncKnowledgeBase",
+			Handler:    _WecomRPC_SyncKnowledgeBase_Handler,
 		},
 		{
 			MethodName: "QueryIndicatorCountInBatch",

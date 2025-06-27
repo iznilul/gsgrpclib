@@ -937,3 +937,19 @@ func InvokeWecomRPCQueryIndicatorCountInBatch(queryAO map[int][]map[string]inter
 	result := utils.ParseAnyToMapIntList(vo.Map)
 	return result, nil
 }
+
+func InvokeRpcSyncKnowledgeBase(mapList []map[string]interface{}, ctx context.Context) error {
+	jsonStr, _ := util.ToJSONStr(mapList)
+	toAny, err := utils.ParseJsonStrToAnyList(jsonStr)
+	if err != nil {
+		return err
+	}
+	ao := &wecom_rpc.RequestAO{
+		MapList: toAny,
+	}
+	_, err = client.InvokeWecomRPCMethod(ctx, "SyncKnowledgeBase", ao)
+	if err != nil {
+		return err
+	}
+	return nil
+}
