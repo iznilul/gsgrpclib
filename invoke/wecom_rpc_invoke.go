@@ -802,8 +802,8 @@ func InvokeRPCJudgeTodayIsWorkday(ctx context.Context) (bool, error) {
 	return isWorkday, nil
 }
 
-func InvokeWecomRPCQueryIndicatorCount(queryAO map[int]map[string]interface{}, ctx context.Context) (map[int]map[string]interface{}, error) {
-	toAny, err := utils.ParseMapIntToAny(queryAO)
+func InvokeWecomRPCQueryIndicatorCount(queryAO map[int][]map[string]interface{}, ctx context.Context) (map[int][]map[string]interface{}, error) {
+	toAny, err := utils.ParseDataToAny(queryAO)
 	if err != nil {
 		return nil, err
 	}
@@ -814,7 +814,7 @@ func InvokeWecomRPCQueryIndicatorCount(queryAO map[int]map[string]interface{}, c
 	if err != nil {
 		return nil, err
 	}
-	result := utils.ParseAnyToMapInt(vo.Map)
+	result := utils.ParseAnyToMapIntList(vo.Map)
 	return result, nil
 }
 
