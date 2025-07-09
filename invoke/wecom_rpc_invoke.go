@@ -953,3 +953,17 @@ func InvokeRpcSyncKnowledgeBase(mapList []map[string]interface{}, ctx context.Co
 	}
 	return nil
 }
+
+func InvokeQuerySupplierBySpNoList(spNoList []string, ctx context.Context) (map[string]map[string]interface{}, error) {
+	jsonStr, _ := util.ToJSONStr(spNoList)
+	anyList, err := utils.ParseJsonStrToAnyList(jsonStr)
+	ao := &wecom_rpc.RequestAO{
+		DataList: anyList,
+	}
+	vo, err := client.InvokeWecomRPCMethod(ctx, "QuerySupplierBySpNoList", ao)
+	if err != nil {
+		return nil, err
+	}
+	result := utils.ParseAnyToMapStringMap(vo.Map)
+	return result, nil
+}
