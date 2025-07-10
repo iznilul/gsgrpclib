@@ -89,6 +89,7 @@ service WecomRPC {
   rpc SyncKnowledgeBase(RequestAO) returns (ResponseVO) {}
   rpc QueryIndicatorCountInBatch(RequestAO) returns (ResponseVO) {}
   rpc QuerySupplierBySpNoList(RequestAO) returns (ResponseVO) {}
+  rpc SyncInternshipPlan(RequestAO) returns (ResponseVO) {}
 }
 
 message MessageAO {

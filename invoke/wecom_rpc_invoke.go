@@ -967,3 +967,19 @@ func InvokeQuerySupplierBySpNoList(spNoList []string, ctx context.Context) (map[
 	result := utils.ParseAnyToMapStringMap(vo.Map)
 	return result, nil
 }
+
+func InvokeRpcSyncInternshipPlan(mapList []map[string]interface{}, ctx context.Context) error {
+	jsonStr, _ := util.ToJSONStr(mapList)
+	toAny, err := utils.ParseJsonStrToAnyList(jsonStr)
+	if err != nil {
+		return err
+	}
+	ao := &wecom_rpc.RequestAO{
+		MapList: toAny,
+	}
+	_, err = client.InvokeWecomRPCMethod(ctx, "SyncInternshipPlan", ao)
+	if err != nil {
+		return err
+	}
+	return nil
+}
