@@ -86,7 +86,7 @@ service WecomRPC {
   rpc GenerateReportRecord(RequestAO) returns (ResponseVO) {}
   rpc SyncAcademy(RequestAO) returns (ResponseVO) {}
   rpc SyncTraining(RequestAO) returns (ResponseVO) {}
-  rpc SyncKnowledgeBase(RequestAO) returns (ResponseVO) {}
+  rpc SyncCourse(RequestAO) returns (ResponseVO) {}
   rpc QueryIndicatorCountInBatch(RequestAO) returns (ResponseVO) {}
   rpc QuerySupplierBySpNoList(RequestAO) returns (ResponseVO) {}
   rpc SyncInternshipPlan(RequestAO) returns (ResponseVO) {}

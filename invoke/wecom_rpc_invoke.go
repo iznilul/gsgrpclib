@@ -938,7 +938,7 @@ func InvokeWecomRPCQueryIndicatorCountInBatch(queryAO map[int][]map[string]inter
 	return result, nil
 }
 
-func InvokeRpcSyncKnowledgeBase(mapList []map[string]interface{}, ctx context.Context) error {
+func InvokeRpcSyncCourse(mapList []map[string]interface{}, ctx context.Context) error {
 	jsonStr, _ := util.ToJSONStr(mapList)
 	toAny, err := utils.ParseJsonStrToAnyList(jsonStr)
 	if err != nil {
@@ -947,7 +947,7 @@ func InvokeRpcSyncKnowledgeBase(mapList []map[string]interface{}, ctx context.Co
 	ao := &wecom_rpc.RequestAO{
 		MapList: toAny,
 	}
-	_, err = client.InvokeWecomRPCMethod(ctx, "SyncKnowledgeBase", ao)
+	_, err = client.InvokeWecomRPCMethod(ctx, "SyncCourse", ao)
 	if err != nil {
 		return err
 	}
