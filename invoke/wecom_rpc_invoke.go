@@ -983,3 +983,18 @@ func InvokeRpcSyncInternshipPlan(mapList []map[string]interface{}, ctx context.C
 	}
 	return nil
 }
+
+func InvokeRPCGeneratePriceTable(queryAO map[string]interface{}, ctx context.Context) error {
+	toAny, err := utils.ParseMapToAny(queryAO)
+	if err != nil {
+		return err
+	}
+	ao := &wecom_rpc.RequestAO{
+		Map: toAny,
+	}
+	_, err = client.InvokeWecomRPCMethod(ctx, "GeneratePriceTable", ao)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -90,6 +90,7 @@ service WecomRPC {
   rpc QueryIndicatorCountInBatch(RequestAO) returns (ResponseVO) {}
   rpc QuerySupplierBySpNoList(RequestAO) returns (ResponseVO) {}
   rpc SyncInternshipPlan(RequestAO) returns (ResponseVO) {}
+  rpc GeneratePriceTable(RequestAO) returns (ResponseVO) {}
 }
 
 message MessageAO {
