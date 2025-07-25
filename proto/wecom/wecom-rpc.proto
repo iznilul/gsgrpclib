@@ -81,7 +81,6 @@ service WecomRPC {
   rpc QueryIndicatorCount(RequestAO) returns (ResponseVO) {}
   rpc QueryIndicatorDetail(RequestAO) returns (ResponseVO) {}
   rpc QueryHalfDayLeaveMap(RequestAO) returns (ResponseVO) {}
-  rpc QueryCheckInMonth(RequestAO) returns (ResponseVO) {}
   rpc CalculateUserIndicator(RequestAO) returns (ResponseVO) {}
   rpc GenerateReportRecord(RequestAO) returns (ResponseVO) {}
   rpc SyncAcademy(RequestAO) returns (ResponseVO) {}
@@ -90,7 +89,6 @@ service WecomRPC {
   rpc QueryIndicatorCountInBatch(RequestAO) returns (ResponseVO) {}
   rpc QuerySupplierBySpNoList(RequestAO) returns (ResponseVO) {}
   rpc SyncInternshipPlan(RequestAO) returns (ResponseVO) {}
-  rpc GeneratePriceTable(RequestAO) returns (ResponseVO) {}
 }
 
 message MessageAO {

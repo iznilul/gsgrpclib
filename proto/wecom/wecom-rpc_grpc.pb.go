@@ -90,7 +90,6 @@ const (
 	WecomRPC_QueryIndicatorCount_FullMethodName             = "/wrpc.WecomRPC/QueryIndicatorCount"
 	WecomRPC_QueryIndicatorDetail_FullMethodName            = "/wrpc.WecomRPC/QueryIndicatorDetail"
 	WecomRPC_QueryHalfDayLeaveMap_FullMethodName            = "/wrpc.WecomRPC/QueryHalfDayLeaveMap"
-	WecomRPC_QueryCheckInMonth_FullMethodName               = "/wrpc.WecomRPC/QueryCheckInMonth"
 	WecomRPC_CalculateUserIndicator_FullMethodName          = "/wrpc.WecomRPC/CalculateUserIndicator"
 	WecomRPC_GenerateReportRecord_FullMethodName            = "/wrpc.WecomRPC/GenerateReportRecord"
 	WecomRPC_SyncAcademy_FullMethodName                     = "/wrpc.WecomRPC/SyncAcademy"
@@ -99,7 +98,6 @@ const (
 	WecomRPC_QueryIndicatorCountInBatch_FullMethodName      = "/wrpc.WecomRPC/QueryIndicatorCountInBatch"
 	WecomRPC_QuerySupplierBySpNoList_FullMethodName         = "/wrpc.WecomRPC/QuerySupplierBySpNoList"
 	WecomRPC_SyncInternshipPlan_FullMethodName              = "/wrpc.WecomRPC/SyncInternshipPlan"
-	WecomRPC_GeneratePriceTable_FullMethodName              = "/wrpc.WecomRPC/GeneratePriceTable"
 )
 
 // WecomRPCClient is the client API for WecomRPC service.
@@ -163,7 +161,6 @@ type WecomRPCClient interface {
 	QueryIndicatorCount(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	QueryIndicatorDetail(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	QueryHalfDayLeaveMap(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
-	QueryCheckInMonth(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	CalculateUserIndicator(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	GenerateReportRecord(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	SyncAcademy(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
@@ -172,7 +169,6 @@ type WecomRPCClient interface {
 	QueryIndicatorCountInBatch(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	QuerySupplierBySpNoList(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	SyncInternshipPlan(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
-	GeneratePriceTable(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 }
 
 type wecomRPCClient struct {
@@ -733,16 +729,6 @@ func (c *wecomRPCClient) QueryHalfDayLeaveMap(ctx context.Context, in *RequestAO
 	return out, nil
 }
 
-func (c *wecomRPCClient) QueryCheckInMonth(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ResponseVO)
-	err := c.cc.Invoke(ctx, WecomRPC_QueryCheckInMonth_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *wecomRPCClient) CalculateUserIndicator(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ResponseVO)
@@ -823,16 +809,6 @@ func (c *wecomRPCClient) SyncInternshipPlan(ctx context.Context, in *RequestAO, 
 	return out, nil
 }
 
-func (c *wecomRPCClient) GeneratePriceTable(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ResponseVO)
-	err := c.cc.Invoke(ctx, WecomRPC_GeneratePriceTable_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // WecomRPCServer is the server API for WecomRPC service.
 // All implementations must embed UnimplementedWecomRPCServer
 // for forward compatibility.
@@ -894,7 +870,6 @@ type WecomRPCServer interface {
 	QueryIndicatorCount(context.Context, *RequestAO) (*ResponseVO, error)
 	QueryIndicatorDetail(context.Context, *RequestAO) (*ResponseVO, error)
 	QueryHalfDayLeaveMap(context.Context, *RequestAO) (*ResponseVO, error)
-	QueryCheckInMonth(context.Context, *RequestAO) (*ResponseVO, error)
 	CalculateUserIndicator(context.Context, *RequestAO) (*ResponseVO, error)
 	GenerateReportRecord(context.Context, *RequestAO) (*ResponseVO, error)
 	SyncAcademy(context.Context, *RequestAO) (*ResponseVO, error)
@@ -903,7 +878,6 @@ type WecomRPCServer interface {
 	QueryIndicatorCountInBatch(context.Context, *RequestAO) (*ResponseVO, error)
 	QuerySupplierBySpNoList(context.Context, *RequestAO) (*ResponseVO, error)
 	SyncInternshipPlan(context.Context, *RequestAO) (*ResponseVO, error)
-	GeneratePriceTable(context.Context, *RequestAO) (*ResponseVO, error)
 	mustEmbedUnimplementedWecomRPCServer()
 }
 
@@ -1079,9 +1053,6 @@ func (UnimplementedWecomRPCServer) QueryIndicatorDetail(context.Context, *Reques
 func (UnimplementedWecomRPCServer) QueryHalfDayLeaveMap(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method QueryHalfDayLeaveMap not implemented")
 }
-func (UnimplementedWecomRPCServer) QueryCheckInMonth(context.Context, *RequestAO) (*ResponseVO, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method QueryCheckInMonth not implemented")
-}
 func (UnimplementedWecomRPCServer) CalculateUserIndicator(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CalculateUserIndicator not implemented")
 }
@@ -1105,9 +1076,6 @@ func (UnimplementedWecomRPCServer) QuerySupplierBySpNoList(context.Context, *Req
 }
 func (UnimplementedWecomRPCServer) SyncInternshipPlan(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SyncInternshipPlan not implemented")
-}
-func (UnimplementedWecomRPCServer) GeneratePriceTable(context.Context, *RequestAO) (*ResponseVO, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GeneratePriceTable not implemented")
 }
 func (UnimplementedWecomRPCServer) mustEmbedUnimplementedWecomRPCServer() {}
 func (UnimplementedWecomRPCServer) testEmbeddedByValue()                  {}
@@ -2120,24 +2088,6 @@ func _WecomRPC_QueryHalfDayLeaveMap_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _WecomRPC_QueryCheckInMonth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RequestAO)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WecomRPCServer).QueryCheckInMonth(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: WecomRPC_QueryCheckInMonth_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WecomRPCServer).QueryCheckInMonth(ctx, req.(*RequestAO))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _WecomRPC_CalculateUserIndicator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RequestAO)
 	if err := dec(in); err != nil {
@@ -2278,24 +2228,6 @@ func _WecomRPC_SyncInternshipPlan_Handler(srv interface{}, ctx context.Context, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(WecomRPCServer).SyncInternshipPlan(ctx, req.(*RequestAO))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _WecomRPC_GeneratePriceTable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RequestAO)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WecomRPCServer).GeneratePriceTable(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: WecomRPC_GeneratePriceTable_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WecomRPCServer).GeneratePriceTable(ctx, req.(*RequestAO))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2528,10 +2460,6 @@ var WecomRPC_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _WecomRPC_QueryHalfDayLeaveMap_Handler,
 		},
 		{
-			MethodName: "QueryCheckInMonth",
-			Handler:    _WecomRPC_QueryCheckInMonth_Handler,
-		},
-		{
 			MethodName: "CalculateUserIndicator",
 			Handler:    _WecomRPC_CalculateUserIndicator_Handler,
 		},
@@ -2562,10 +2490,6 @@ var WecomRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SyncInternshipPlan",
 			Handler:    _WecomRPC_SyncInternshipPlan_Handler,
-		},
-		{
-			MethodName: "GeneratePriceTable",
-			Handler:    _WecomRPC_GeneratePriceTable_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
