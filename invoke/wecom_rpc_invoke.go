@@ -603,6 +603,21 @@ func InvokeRpcWecomSyncSupplier(ctx context.Context) error {
 	return nil
 }
 
+func InvokeRpcUpdateSupplier(map1 map[string]interface{}, ctx context.Context) error {
+	toAny, err := utils.ParseMapToAny(map1)
+	if err != nil {
+		return err
+	}
+	ao := &wecom_rpc.RequestAO{
+		Map: toAny,
+	}
+	_, err = client.InvokeWecomRPCMethod(ctx, "UpdateSupplier", ao)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func InvokeRpcWecomFindBusinessCustomerList(map2 map[string]interface{}, ctx context.Context) ([]map[string]interface{}, interface{}, error) {
 	toAny, err := utils.ParseMapToAny(map2)
 	if err != nil {
