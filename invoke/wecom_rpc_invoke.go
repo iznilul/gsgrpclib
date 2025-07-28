@@ -691,7 +691,7 @@ func InvokeRpcGetBusinessCustomer(spNo string, ctx context.Context) (map[string]
 
 func InvokeRPCGetNeedNotifyCustomerList(spNoList []string, ctx context.Context) ([]map[string]interface{}, error) {
 	jsonStr, _ := util.ToJSONStr(spNoList)
-	anyList, err := utils.ParseJsonStrToAnyList(jsonStr)
+	anyList, _ := utils.ParseJsonStrToAnyList(jsonStr)
 	ao := &wecom_rpc.RequestAO{
 		DataList: anyList,
 	}
@@ -955,7 +955,7 @@ func InvokeRpcSyncCourse(mapList []map[string]interface{}, ctx context.Context) 
 
 func InvokeQuerySupplierBySpNoList(spNoList []string, ctx context.Context) (map[string]map[string]interface{}, error) {
 	jsonStr, _ := util.ToJSONStr(spNoList)
-	anyList, err := utils.ParseJsonStrToAnyList(jsonStr)
+	anyList, _ := utils.ParseJsonStrToAnyList(jsonStr)
 	ao := &wecom_rpc.RequestAO{
 		DataList: anyList,
 	}

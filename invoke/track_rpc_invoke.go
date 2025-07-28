@@ -153,15 +153,11 @@ func InvokeRpcTrackSendSyncRequest(comment map[string]interface{}, userID string
 		if inst["procDefName"] == "铁路模板" {
 			boxIDListString := map1["box_id"].(string)
 			boxIDList := strings.Split(boxIDListString, ";")
-			for _, boxID := range boxIDList {
-				contentNoList = append(contentNoList, boxID)
-			}
+			contentNoList = append(contentNoList, boxIDList...)
 		} else if inst["procDefName"] == "车皮模板" {
 			changeCarIDListString := map1["change_car_id"].(string)
 			changeCarIDList := strings.Split(changeCarIDListString, ";")
-			for _, changeCarID := range changeCarIDList {
-				contentNoList = append(contentNoList, changeCarID)
-			}
+			contentNoList = append(contentNoList, changeCarIDList...)
 		}
 	} else if departureDirectionStr == "俄罗斯" || departureDirectionStr == "蒙古" {
 		changeCarIDListString := map1["change_car_id"].(string)
