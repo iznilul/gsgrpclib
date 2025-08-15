@@ -48,6 +48,7 @@ const (
 	BusinessRPC_SyncOrderProfit_FullMethodName            = "/brpc.BusinessRPC/SyncOrderProfit"
 	BusinessRPC_CalculateUserIndicator_FullMethodName     = "/brpc.BusinessRPC/CalculateUserIndicator"
 	BusinessRPC_QueryIndicatorCountInBatch_FullMethodName = "/brpc.BusinessRPC/QueryIndicatorCountInBatch"
+	BusinessRPC_GenerateRecordInMonth_FullMethodName      = "/brpc.BusinessRPC/GenerateRecordInMonth"
 )
 
 // BusinessRPCClient is the client API for BusinessRPC service.
@@ -69,6 +70,7 @@ type BusinessRPCClient interface {
 	SyncOrderProfit(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	CalculateUserIndicator(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	QueryIndicatorCountInBatch(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	GenerateRecordInMonth(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 }
 
 type businessRPCClient struct {
@@ -209,6 +211,16 @@ func (c *businessRPCClient) QueryIndicatorCountInBatch(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *businessRPCClient) GenerateRecordInMonth(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, BusinessRPC_GenerateRecordInMonth_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BusinessRPCServer is the server API for BusinessRPC service.
 // All implementations must embed UnimplementedBusinessRPCServer
 // for forward compatibility.
@@ -228,6 +240,7 @@ type BusinessRPCServer interface {
 	SyncOrderProfit(context.Context, *RequestAO) (*ResponseVO, error)
 	CalculateUserIndicator(context.Context, *RequestAO) (*ResponseVO, error)
 	QueryIndicatorCountInBatch(context.Context, *RequestAO) (*ResponseVO, error)
+	GenerateRecordInMonth(context.Context, *RequestAO) (*ResponseVO, error)
 	mustEmbedUnimplementedBusinessRPCServer()
 }
 
@@ -276,6 +289,9 @@ func (UnimplementedBusinessRPCServer) CalculateUserIndicator(context.Context, *R
 }
 func (UnimplementedBusinessRPCServer) QueryIndicatorCountInBatch(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method QueryIndicatorCountInBatch not implemented")
+}
+func (UnimplementedBusinessRPCServer) GenerateRecordInMonth(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateRecordInMonth not implemented")
 }
 func (UnimplementedBusinessRPCServer) mustEmbedUnimplementedBusinessRPCServer() {}
 func (UnimplementedBusinessRPCServer) testEmbeddedByValue()                     {}
@@ -532,6 +548,24 @@ func _BusinessRPC_QueryIndicatorCountInBatch_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BusinessRPC_GenerateRecordInMonth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BusinessRPCServer).GenerateRecordInMonth(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BusinessRPC_GenerateRecordInMonth_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BusinessRPCServer).GenerateRecordInMonth(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BusinessRPC_ServiceDesc is the grpc.ServiceDesc for BusinessRPC service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -590,6 +624,10 @@ var BusinessRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "QueryIndicatorCountInBatch",
 			Handler:    _BusinessRPC_QueryIndicatorCountInBatch_Handler,
+		},
+		{
+			MethodName: "GenerateRecordInMonth",
+			Handler:    _BusinessRPC_GenerateRecordInMonth_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
