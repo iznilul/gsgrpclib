@@ -36,6 +36,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	WecomRPC_GetUserList_FullMethodName                     = "/wrpc.WecomRPC/GetUserList"
+	WecomRPC_GetAllUserList_FullMethodName                  = "/wrpc.WecomRPC/GetAllUserList"
 	WecomRPC_GetUserInfo_FullMethodName                     = "/wrpc.WecomRPC/GetUserInfo"
 	WecomRPC_SaveUserDetail_FullMethodName                  = "/wrpc.WecomRPC/SaveUserDetail"
 	WecomRPC_GetUserDetailByUserID_FullMethodName           = "/wrpc.WecomRPC/GetUserDetailByUserID"
@@ -109,6 +110,7 @@ const (
 // Interface exported by the server.
 type WecomRPCClient interface {
 	GetUserList(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
+	GetAllUserList(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	GetUserInfo(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	SaveUserDetail(ctx context.Context, in *UserDetailAO, opts ...grpc.CallOption) (*ResponseVO, error)
 	GetUserDetailByUserID(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error)
@@ -187,6 +189,16 @@ func (c *wecomRPCClient) GetUserList(ctx context.Context, in *RequestAO, opts ..
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ResponseVO)
 	err := c.cc.Invoke(ctx, WecomRPC_GetUserList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *wecomRPCClient) GetAllUserList(ctx context.Context, in *RequestAO, opts ...grpc.CallOption) (*ResponseVO, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResponseVO)
+	err := c.cc.Invoke(ctx, WecomRPC_GetAllUserList_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -840,6 +852,7 @@ func (c *wecomRPCClient) UpdateUser(ctx context.Context, in *RequestAO, opts ...
 // Interface exported by the server.
 type WecomRPCServer interface {
 	GetUserList(context.Context, *RequestAO) (*ResponseVO, error)
+	GetAllUserList(context.Context, *RequestAO) (*ResponseVO, error)
 	GetUserInfo(context.Context, *RequestAO) (*ResponseVO, error)
 	SaveUserDetail(context.Context, *UserDetailAO) (*ResponseVO, error)
 	GetUserDetailByUserID(context.Context, *RequestAO) (*ResponseVO, error)
@@ -916,6 +929,9 @@ type UnimplementedWecomRPCServer struct{}
 
 func (UnimplementedWecomRPCServer) GetUserList(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserList not implemented")
+}
+func (UnimplementedWecomRPCServer) GetAllUserList(context.Context, *RequestAO) (*ResponseVO, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllUserList not implemented")
 }
 func (UnimplementedWecomRPCServer) GetUserInfo(context.Context, *RequestAO) (*ResponseVO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserInfo not implemented")
@@ -1144,6 +1160,24 @@ func _WecomRPC_GetUserList_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(WecomRPCServer).GetUserList(ctx, req.(*RequestAO))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WecomRPC_GetAllUserList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestAO)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WecomRPCServer).GetAllUserList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WecomRPC_GetAllUserList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WecomRPCServer).GetAllUserList(ctx, req.(*RequestAO))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2310,6 +2344,10 @@ var WecomRPC_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserList",
 			Handler:    _WecomRPC_GetUserList_Handler,
+		},
+		{
+			MethodName: "GetAllUserList",
+			Handler:    _WecomRPC_GetAllUserList_Handler,
 		},
 		{
 			MethodName: "GetUserInfo",

@@ -27,6 +27,7 @@ package wrpc;
 // Interface exported by the server.
 service WecomRPC {
   rpc GetUserList(RequestAO) returns (ResponseVO) {}
+  rpc GetAllUserList(RequestAO) returns (ResponseVO) {}
   rpc GetUserInfo(RequestAO) returns (ResponseVO) {}
   rpc SaveUserDetail(UserDetailAO) returns (ResponseVO) {}
   rpc GetUserDetailByUserID(RequestAO) returns (ResponseVO) {}

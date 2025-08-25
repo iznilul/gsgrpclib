@@ -18,6 +18,15 @@ func InvokeRpcGetUserList(ctx context.Context) ([]map[string]interface{}, error)
 	return userList, nil
 }
 
+func InvokeRpcGetAllUserList(ctx context.Context) ([]map[string]interface{}, error) {
+	vo, err := client.InvokeWecomRPCMethod(ctx, "GetAllUserList", &wecom_rpc.RequestAO{})
+	if err != nil {
+		return nil, err
+	}
+	userList := utils.ParseAnyToMapList(vo.MapList)
+	return userList, nil
+}
+
 func InvokeRpcGetUserInfo(code string, ctx context.Context) (string, error) {
 	data, err := utils.ParseDataToAny(code)
 	if err != nil {
