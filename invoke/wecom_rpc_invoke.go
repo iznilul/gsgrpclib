@@ -982,3 +982,18 @@ func InvokeRpcSyncInternshipPlan(mapList []map[string]interface{}, ctx context.C
 	}
 	return nil
 }
+
+func InvokeWecomRpcUpdateUser(userInfo map[string]interface{}, ctx context.Context) error {
+	toAny, err := utils.ParseMapToAny(userInfo)
+	if err != nil {
+		return err
+	}
+	ao := &wecom_rpc.RequestAO{
+		Map: toAny,
+	}
+	_, err = client.InvokeWecomRPCMethod(ctx, "UpdateUser", ao)
+	if err != nil {
+		return err
+	}
+	return nil
+}
